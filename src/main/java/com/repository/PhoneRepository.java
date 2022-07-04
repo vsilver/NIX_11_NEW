@@ -1,45 +1,51 @@
 package com.repository;
 
 import com.model.Phone;
+import com.model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.*;
 
 public class PhoneRepository implements CrudRepository {
-    private final List<Phone> phones;
+    private final List<Product> phones;
 
     public PhoneRepository() {
         phones = new LinkedList<>();
     }
+    private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
     @Override
-    public void save(Phone phone) {
-        phones.add(phone);
+    public void save(Product phone) {
+        phones.add((Product)phone);
     }
 
     @Override
-    public void saveAll(List<Phone> phones) {
-        for (Phone phone : phones) {
+    public void saveAll(List<Product> phones) {
+        for (Product phone : phones) {
             save(phone);
         }
     }
 
     @Override
-    public boolean update(Phone phone) {
-        final Optional<Phone> result = findById(phone.getId());
+    public boolean update(Product phone) {
+        final Optional<Product> result = findById(phone.getId());
         if (result.isEmpty()) {
             return false;
         }
-        final Phone originPhone = result.get();
-        PhoneCopy.copy(phone, originPhone);
+        final Product originPhone = result.get();
+        PhoneCopy.copy((Phone)phone, (Phone)originPhone);
         return true;
     }
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Phone> iterator = phones.iterator();
+        final Iterator<Product> iterator = phones.iterator();
         while (iterator.hasNext()) {
-            final Phone phone = iterator.next();
+            final Product phone = iterator.next();
             if (phone.getId().equals(id)) {
+                logger.info( phone + " Was deleted ");
                 iterator.remove();
                 return true;
             }
@@ -48,7 +54,7 @@ public class PhoneRepository implements CrudRepository {
     }
 
     @Override
-    public List<Phone> getAll() {
+    public List<Product> getAll() {
         if (phones.isEmpty()) {
             return Collections.emptyList();
         }
@@ -56,9 +62,9 @@ public class PhoneRepository implements CrudRepository {
     }
 
     @Override
-    public Optional<Phone> findById(String id) {
-        Phone result = null;
-        for (Phone phone : phones) {
+    public Optional<Product> findById(String id) {
+        Product result = null;
+        for (Product phone : phones) {
             if (phone.getId().equals(id)) {
                 result = phone;
             }

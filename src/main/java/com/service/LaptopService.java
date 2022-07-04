@@ -1,8 +1,9 @@
 package com.service;
 
 import com.model.Manufacturer;
-import com.model.Phone;
+import com.model.Laptop;
 import com.model.Product;
+import com.repository.LaptopRepository;
 import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +12,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class PhoneService {
+public class LaptopService {
     private static final Random RANDOM = new Random();
-    private static final PhoneRepository REPOSITORY = new PhoneRepository();
-    private final Logger logger = LoggerFactory.getLogger(PhoneService.class);
+    private static final LaptopRepository REPOSITORY = new LaptopRepository();
+    private final Logger logger = LoggerFactory.getLogger(LaptopService.class);
 
-    public void createAndSavePhones(int count) {
-        List<Product> phones = new LinkedList<>();
+    public void createAndSaveLaptops(int count) {
+        List<Product> laptops = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-            Phone phone = new Phone(
+            Laptop laptop = new Laptop(
                     "Title-" + RANDOM.nextInt(1000),
                     RANDOM.nextInt(500),
                     RANDOM.nextDouble(1000.0),
@@ -27,10 +28,10 @@ public class PhoneService {
                     getRandomManufacturer()
 
             );
-            logger.info(phone + "Was Created");
-            phones.add(phone);
+            logger.info(laptop + "Was Created");
+            laptops.add(laptop);
         }
-        REPOSITORY.saveAll(phones);
+        REPOSITORY.saveAll(laptops);
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -40,13 +41,13 @@ public class PhoneService {
     }
 
     public void printAll() {
-        for (Product phone : REPOSITORY.getAll()) {
-            System.out.println(phone); // TODO: 02/07/22  
+        for (Product laptop : REPOSITORY.getAll()) {
+            System.out.println(laptop); // TODO: 02/07/22
         }
     }
 
-    public void update(Product phone) {
-        REPOSITORY.update(phone);
+    public void update(Product laptop) {
+        REPOSITORY.update(laptop);
     }
 
     public void delete(String id) {
@@ -56,5 +57,4 @@ public class PhoneService {
     public List<Product> getAll() {
         return REPOSITORY.getAll();
     }
-
 }
