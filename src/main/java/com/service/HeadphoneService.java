@@ -1,9 +1,9 @@
 package com.service;
 
+import com.model.Headphone;
 import com.model.Manufacturer;
-import com.model.Phone;
 import com.model.Product;
-import com.repository.PhoneRepository;
+import com.repository.HeadphoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,15 +11,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class PhoneService {
+public class HeadphoneService {
     private static final Random RANDOM = new Random();
-    private static final PhoneRepository REPOSITORY = new PhoneRepository();
-    private final Logger logger = LoggerFactory.getLogger(PhoneService.class);
+    private static final HeadphoneRepository REPOSITORY = new HeadphoneRepository();
+    private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
 
-    public void createAndSavePhones(int count) {
-        List<Product> phones = new LinkedList<>();
+    public void createAndSaveHeadphones(int count) {
+        List<Product> headphones = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-            Phone phone = new Phone(
+            Headphone headphone = new Headphone(
                     "Title-" + RANDOM.nextInt(1000),
                     RANDOM.nextInt(500),
                     RANDOM.nextDouble(1000.0),
@@ -27,10 +27,10 @@ public class PhoneService {
                     getRandomManufacturer()
 
             );
-            logger.info(phone + "Was Created");
-            phones.add(phone);
+            logger.info(headphone + "Was Created");
+            headphones.add(headphone);
         }
-        REPOSITORY.saveAll(phones);
+        REPOSITORY.saveAll(headphones);
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -40,13 +40,13 @@ public class PhoneService {
     }
 
     public void printAll() {
-        for (Product phone : REPOSITORY.getAll()) {
-            System.out.println(phone); // TODO: 02/07/22  
+        for (Product headphone : REPOSITORY.getAll()) {
+            System.out.println(headphone); // TODO: 02/07/22
         }
     }
 
-    public void update(Product phone) {
-        REPOSITORY.update(phone);
+    public void update(Product headphone) {
+        REPOSITORY.update(headphone);
     }
 
     public void delete(String id) {
@@ -56,5 +56,4 @@ public class PhoneService {
     public List<Product> getAll() {
         return REPOSITORY.getAll();
     }
-
 }

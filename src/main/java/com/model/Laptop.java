@@ -25,6 +25,7 @@ public class Laptop extends Product {
                 ", title='" + title + '\'' +
                 ", count=" + count +
                 ", price=" + price +
+                ", model=" + model +
                 '}';
     }
 }
