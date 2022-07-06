@@ -14,10 +14,17 @@ import java.util.Random;
 
 public class LaptopService {
     private static final Random RANDOM = new Random();
-    private static final LaptopRepository REPOSITORY = new LaptopRepository();
+    private final LaptopRepository repository;
     private final Logger logger = LoggerFactory.getLogger(LaptopService.class);
 
+    public LaptopService(LaptopRepository repository){
+        this.repository = repository;
+    }
+
     public void createAndSaveLaptops(int count) {
+        if(count < 1){
+            throw new IllegalArgumentException("count must be bigger than 0");
+        }
         List<Product> laptops = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             Laptop laptop = new Laptop(
@@ -28,10 +35,10 @@ public class LaptopService {
                     getRandomManufacturer()
 
             );
-            logger.info(laptop + "Was Created");
+            logger.info("{} Was Created",laptop);
             laptops.add(laptop);
         }
-        REPOSITORY.saveAll(laptops);
+        repository.saveAll(laptops);
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -41,20 +48,27 @@ public class LaptopService {
     }
 
     public void printAll() {
-        for (Product laptop : REPOSITORY.getAll()) {
+        for (Product laptop : repository.getAll()) {
             System.out.println(laptop); // TODO: 02/07/22
         }
     }
 
     public void update(Product laptop) {
-        REPOSITORY.update(laptop);
+        repository.update(laptop);
     }
 
     public void delete(String id) {
-        REPOSITORY.delete(id);
+        repository.delete(id);
     }
 
     public List<Product> getAll() {
-        return REPOSITORY.getAll();
+        return repository.getAll();
+    }
+
+    public void saveLaptop(Product laptop){
+        if(laptop.getCount() == 0){
+            laptop.setCount(-1);
+        }
+        repository.save(laptop);
     }
 }

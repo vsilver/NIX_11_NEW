@@ -10,15 +10,15 @@ import java.util.*;
 public class HeadphoneRepository implements CrudRepository {
 
     private final List<Product> headphones;
+    private final Logger logger = LoggerFactory.getLogger(HeadphoneRepository.class);
 
     public HeadphoneRepository() {
         headphones = new LinkedList<>();
     }
-    private final Logger logger = LoggerFactory.getLogger(HeadphoneRepository.class);
 
     @Override
     public void save(Product headphone) {
-        headphones.add((Product)headphone);
+        headphones.add(headphone);
     }
 
     @Override

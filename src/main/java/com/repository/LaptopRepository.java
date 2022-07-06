@@ -10,15 +10,15 @@ import java.util.*;
 public class LaptopRepository implements CrudRepository {
 
     private final List<Product> laptops;
+    private final Logger logger = LoggerFactory.getLogger(LaptopRepository.class);
 
     public LaptopRepository() {
         laptops = new LinkedList<>();
     }
-    private final Logger logger = LoggerFactory.getLogger(LaptopRepository.class);
 
     @Override
     public void save(Product laptop) {
-        laptops.add((Product)laptop);
+        laptops.add(laptop);
 
     }
 

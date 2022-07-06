@@ -27,7 +27,7 @@ public class HeadphoneService {
                     getRandomManufacturer()
 
             );
-            logger.info(headphone + "Was Created");
+            logger.info("{} Was Created", headphone);
             headphones.add(headphone);
         }
         REPOSITORY.saveAll(headphones);

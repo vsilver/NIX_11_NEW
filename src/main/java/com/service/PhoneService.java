@@ -27,7 +27,7 @@ public class PhoneService {
                     getRandomManufacturer()
 
             );
-            logger.info(phone + "Was Created");
+            logger.info("{} Was Created", phone);
             phones.add(phone);
         }
         REPOSITORY.saveAll(phones);
