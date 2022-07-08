@@ -69,6 +69,13 @@ class LaptopServiceTest {
     }
 
     @Test
+    void saveLaptop_call_real_method() {
+        final Laptop laptop = new Laptop("Title", 100, 1000.0,"Model" , Manufacturer.SAMSUNG);
+        when(target.saveLaptop(laptop)).thenCallRealMethod(laptop.getTitle().equals("Title"));
+        assertEquals("Title", laptop.getTitle());
+    }
+
+    @Test
     void saveLaptop_zeroCount() {
         final Laptop laptop = new Laptop("Title", 0, 1000.0,"Model" , Manufacturer.SAMSUNG);
         target.saveLaptop(laptop);
