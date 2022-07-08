@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class LaptopService {
@@ -70,5 +71,9 @@ public class LaptopService {
             laptop.setCount(-1);
         }
         repository.save(laptop);
+    }
+
+    public Optional<Product> findById(String id) {
+        return repository.findById(id);
     }
 }

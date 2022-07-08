@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,16 +32,6 @@ class LaptopServiceTest {
     @Test
     void createAndSaveLaptops_zeroCount() {
         assertThrows(IllegalArgumentException.class, () -> target.createAndSaveLaptops(0));
-    }
-
-    @Test
-    void createAndSaveLaptops_zeroCount_Mock() {
-        try {
-            when(target.createAndSaveLaptops(0)).thenThrow(new IllegalArgumentException("Input is not valid!!"));
-        } catch (Exception e){
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals("Input is not valid!!",e.getMessage());
-        }
     }
 
     @Test
@@ -69,13 +60,6 @@ class LaptopServiceTest {
     }
 
     @Test
-    void saveLaptop_call_real_method() {
-        final Laptop laptop = new Laptop("Title", 100, 1000.0,"Model" , Manufacturer.SAMSUNG);
-        when(target.saveLaptop(laptop)).thenCallRealMethod(laptop.getTitle().equals("Title"));
-        assertEquals("Title", laptop.getTitle());
-    }
-
-    @Test
     void saveLaptop_zeroCount() {
         final Laptop laptop = new Laptop("Title", 0, 1000.0,"Model" , Manufacturer.SAMSUNG);
         target.saveLaptop(laptop);
@@ -90,5 +74,10 @@ class LaptopServiceTest {
     void getAll() {
         target.getAll();
         verify(repository).getAll();
+    }
+
+    @Test
+    void findById_CallRealMethod() {
+        when(target.findById(Mockito.anyString())).thenCallRealMethod();
     }
 }
