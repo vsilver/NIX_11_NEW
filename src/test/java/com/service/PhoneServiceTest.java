@@ -8,140 +8,67 @@ import org.junit.jupiter.api.Test;
 import com.model.Manufacturer;
 import com.model.Phone;
 import org.junit.jupiter.api.Assertions;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 class PhoneServiceTest {
 
-    private PhoneRepository target;
-
     private Phone phone;
+
+    private PhoneService target;
+
+    private PhoneRepository repository;
 
     @BeforeEach
     void setUp() {
         final Random random = new Random();
-        target = new PhoneRepository();
-        phone = new Phone(
-                "Title-" + random.nextInt(1000),
-                random.nextInt(500),
-                random.nextDouble(1000.0),
-                "Model-" + random.nextInt(10),
-                Manufacturer.APPLE
-        );
+        repository = mock(PhoneRepository.class);
+        target = new PhoneService(repository);
     }
 
     @Test
-    void save() {
-        target.save(phone);
-        final List<Product> phones = target.getAll();
-        Assertions.assertEquals(1, phones.size());
-        Assertions.assertEquals(phones.get(0).getId(), phone.getId());
+    void createAndSavePhones_negativeCount() {
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSavePhones(-1));
     }
 
     @Test
-    void save_putNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.save(null));
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(0, actualResult.size());
+    void createAndSavePhone_zeroCount() {
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSavePhones(0));
     }
 
     @Test
-    void saveAll_singlePhone() {
-        target.saveAll(Collections.singletonList(phone));
-        final List<Product> phones = target.getAll();
-        Assertions.assertEquals(1, phones.size());
-        Assertions.assertEquals(phones.get(0).getId(), phone.getId());
-    }
-
-    @Test
-    void saveAll_noPhone() {
-        target.saveAll(Collections.emptyList());
-        final List<Product> phones = target.getAll();
-        Assertions.assertEquals(0, phones.size());
-    }
-
-    @Test
-    void saveAll_manyPhones() {
-        final Phone otherPhone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
-        target.saveAll(List.of(phone, otherPhone));
-        final List<Product> phones = target.getAll();
-        Assertions.assertEquals(2, phones.size());
-        Assertions.assertEquals(phones.get(0).getId(), phone.getId());
-        Assertions.assertEquals(phones.get(1).getId(), otherPhone.getId());
-    }
-
-    @Test
-    void saveAll_hasDuplicates() {
-        final List<Product> phones = new ArrayList<>();
-        phones.add(phone);
-        phones.add(phone);
-        Assertions.assertThrows(IllegalArgumentException.class, () ->target.saveAll(phones));
-    }
-
-    @Test
-    void saveAll_hasNull() {
-        final List<Product> phones = new ArrayList<>();
-        phones.add(phone);
-        phones.add(null);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.saveAll(phones));
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(1, actualResult.size());
-    }
-
-    @Test
-    void update() {
-        final String newTitle = "New title";
-        target.save(phone);
-        phone.setTitle(newTitle);
-
-        final boolean result = target.update(phone);
-
-        Assertions.assertTrue(result);
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(1, actualResult.size());
-        Assertions.assertEquals(newTitle, actualResult.get(0).getTitle());
-        Assertions.assertEquals(phone.getId(), actualResult.get(0).getId());
-        Assertions.assertEquals(phone.getCount(), actualResult.get(0).getCount());
-    }
-
-    @Test
-    void update_noPhone() {
-        target.save(phone);
-        final Phone noPhone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
-        final boolean result = target.update(noPhone);
-
-        Assertions.assertFalse(result);
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(1, actualResult.size());
-        Assertions.assertEquals(phone.getId(), actualResult.get(0).getId());
-        Assertions.assertEquals(phone.getCount(), actualResult.get(0).getCount());
-    }
-
-    @Test
-    void delete() {
-        target.save(phone);
-        final boolean result = target.delete(phone.getId());
-        Assertions.assertTrue(result);
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(0, actualResult.size());
-    }
-
-    @Test
-    void delete_noPhone() {
-        target.save(phone);
-        final Phone noPhone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
-        final boolean result = target.delete(noPhone.getId());
-        Assertions.assertFalse(result);
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(1, actualResult.size());
+    void createAndSavePhones() {
+        target.createAndSavePhones(2);
+        Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
     @Test
     void getAll() {
-        target.save(phone);
-        final List<Product> actualResult = target.getAll();
-        Assertions.assertEquals(1, actualResult.size());
+        target.getAll();
+        Mockito.verify(repository).getAll();
+    }
+
+    @Test
+    void getAll_Argument_Matcher() {
+        target.getAll();
+        PhoneService target = mock(PhoneService.class);
+        Phone phone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
+        when(target.getAll()).thenReturn(Arrays.asList(phone));
+        Assertions.assertEquals(phone.getId(), target.getAll().stream().findFirst().get().getId());
+
+    }
+
+    @Test
+    void printAll() {
+        target.printAll();
+        Mockito.verify(repository).getAll();
     }
 
     @Test
@@ -150,12 +77,48 @@ class PhoneServiceTest {
         Assertions.assertEquals(0, actualResult.size());
     }
 
-    @Test
+    /*@Test
     void findById() {
         target.save(phone);
         final Optional<Product> optionalPhone = target.findById(phone.getId());
         Assertions.assertTrue(optionalPhone.isPresent());
         final Phone actualPhone = (Phone) optionalPhone.get();
         Assertions.assertEquals(phone.getId(),actualPhone.getId());
+    }*/
+
+    @Test
+    void findById_CallRealMethod() {
+        when(target.findById(Mockito.anyString())).thenCallRealMethod();
+    }
+
+    @Test
+    void savePhone_zeroCount() {
+        final Phone phone = new Phone("Title", 0, 1000.0, "Model", Manufacturer.APPLE);
+        target.savePhone(phone);
+
+        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
+        Mockito.verify(repository).save(argument.capture());
+        Assertions.assertEquals("Title", argument.getValue().getTitle());
+        Assertions.assertEquals(-1, argument.getValue().getCount());
+    }
+
+    @Test
+    void savePhone_verifyTimes() {
+        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
+        target.savePhone(phone);
+
+        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
+        Mockito.verify(repository, Mockito.times(1)).save(argument.capture());
+        Assertions.assertEquals("Title", argument.getValue().getTitle());
+    }
+
+    @Test
+    void savePhone() {
+        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
+        target.savePhone(phone);
+
+        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
+        Mockito.verify(repository).save(argument.capture());
+        Assertions.assertEquals("Title", argument.getValue().getTitle());
     }
 }

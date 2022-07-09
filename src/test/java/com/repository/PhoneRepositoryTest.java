@@ -6,8 +6,11 @@ import com.model.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.*;
+
+import static org.mockito.Mockito.*;
 
 class PhoneRepositoryTest {
 
@@ -154,5 +157,44 @@ class PhoneRepositoryTest {
         Assertions.assertTrue(optionalPhone.isPresent());
         final Phone actualPhone = (Phone) optionalPhone.get();
         Assertions.assertEquals(phone.getId(),actualPhone.getId());
+    }
+
+    @Test
+    void findById_Argument_Matcher() {
+        target = mock(PhoneRepository.class);
+        when(target.findById(Mockito.anyString())).thenReturn(Optional.of(phone));
+        Assertions.assertEquals(phone.getId(), target.findById("1").get().getId());
+    }
+
+    @Test
+    void findById_CallRealMethod() {
+        target = mock(PhoneRepository.class);
+        when(target.findById(Mockito.anyString())).thenCallRealMethod();
+    }
+
+    @Test
+    void findById_noPhone() {
+        target.save(phone);
+        final Phone phone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
+        final Optional<Product> optionalPhone = target.findById(phone.getId());
+        Assertions.assertFalse(optionalPhone.isPresent());
+
+
+    }
+
+    @Test
+    void findById_verify() {
+        target = mock(PhoneRepository.class);
+        final Phone phone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
+        target.findById(phone.getId());
+        Mockito.verify(target).findById(phone.getId());
+    }
+
+    @Test
+    void findById_verifyTimes() {
+        target = mock(PhoneRepository.class);
+        final Phone phone = new Phone("Title", 500, 1000.0, "Model", Manufacturer.APPLE);
+        target.findById(phone.getId());
+        Mockito.verify(target, times(1)).findById(phone.getId());
     }
 }
