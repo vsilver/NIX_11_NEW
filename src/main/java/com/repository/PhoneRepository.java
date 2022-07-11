@@ -18,7 +18,6 @@ public class PhoneRepository implements CrudRepository {
 
     @Override
     public void save(Product phone) {
-        phones.add(phone);
         if (phone == null) {
             final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
             logger.error(exception.getMessage(), exception);
@@ -30,10 +29,8 @@ public class PhoneRepository implements CrudRepository {
     }
 
     private void checkDuplicates(Product phone) {
-        //for (Product p : phones) {
-        for (int i = 0; i < phones.size()-1 ; i++) {
-           // if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
-            if (phone.hashCode() == phones.get(i).hashCode() && phone.equals(phones.get(i)) && phones.get(i) != phones.get(i)) {
+        for (Product p : phones) {
+            if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
                 final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
                         phone.getId());
                 logger.error(exception.getMessage(), exception);
