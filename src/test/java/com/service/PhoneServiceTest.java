@@ -77,15 +77,6 @@ class PhoneServiceTest {
         Assertions.assertEquals(0, actualResult.size());
     }
 
-    /*@Test
-    void findById() {
-        target.save(phone);
-        final Optional<Product> optionalPhone = target.findById(phone.getId());
-        Assertions.assertTrue(optionalPhone.isPresent());
-        final Phone actualPhone = (Phone) optionalPhone.get();
-        Assertions.assertEquals(phone.getId(),actualPhone.getId());
-    }*/
-
     @Test
     void findById_CallRealMethod() {
         when(target.findById(Mockito.anyString())).thenCallRealMethod();
@@ -121,4 +112,28 @@ class PhoneServiceTest {
         Mockito.verify(repository).save(argument.capture());
         Assertions.assertEquals("Title", argument.getValue().getTitle());
     }
+
+    /*@Test
+    public void printIfPresent_test(String id) {
+        //target.save(phone);
+        //target.printIfPresent(phone.getId());
+        final Optional<Product> optionalPhone;
+        target.printIfPresent(phone.getId());
+        //Assertions.assertTrue(target.printIfPresent(phone.getId()));
+        *//*final Phone actualPhone = (Phone) optionalPhone.get();
+        Assertions.assertEquals(phone.getId(),actualPhone.getId());
+        return optionalPhone;*//*
+    }*/
+
+    /*@Test
+    public void printIfPresent_test_negative(String id) {
+        //target.save(phone);
+        target.printIfPresent(phone.getId());
+        //final Optional<Product> optionalPhone = target.printIfPresent(phone.getId());
+        //Assertions.assertTrue(optionalPhone.ifPresent(phone.getId()));
+        *//*final Phone actualPhone = (Phone) optionalPhone.get();
+        Assertions.assertEquals(phone.getId(),actualPhone.getId());
+        return optionalPhone;*//*
+    }*/
+
 }
