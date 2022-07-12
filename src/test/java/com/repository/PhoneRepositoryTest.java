@@ -169,7 +169,8 @@ class PhoneRepositoryTest {
     @Test
     void findById_CallRealMethod() {
         target = mock(PhoneRepository.class);
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
+        when(target.findById(anyString())).thenCallRealMethod();
+        Assertions.assertThrows(RuntimeException.class, () -> target.findById(anyString()));
     }
 
     @Test

@@ -14,8 +14,7 @@ import org.mockito.Mockito;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 class PhoneServiceTest {
@@ -79,7 +78,8 @@ class PhoneServiceTest {
 
     @Test
     void findById_CallRealMethod() {
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
+        when(target.findById(anyString())).thenCallRealMethod();
+        Assertions.assertThrows(RuntimeException.class, () -> target.findById(anyString()));
     }
 
     @Test
