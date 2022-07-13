@@ -10,15 +10,33 @@ import java.util.*;
 
 public class PhoneRepository implements CrudRepository {
     private final List<Product> phones;
+    private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
     public PhoneRepository() {
         phones = new LinkedList<>();
     }
-    private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
     @Override
     public void save(Product phone) {
-        phones.add((Product)phone);
+        if (phone == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(phone);
+            phones.add(phone);
+        }
+    }
+
+    private void checkDuplicates(Product phone) {
+        for (Product p : phones) {
+            if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
+                        phone.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
     }
 
     @Override

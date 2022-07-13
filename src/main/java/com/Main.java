@@ -1,6 +1,9 @@
 package com;
 
 import com.model.Laptop;
+import com.repository.HeadphoneRepository;
+import com.repository.LaptopRepository;
+import com.repository.PhoneRepository;
 import com.service.HeadphoneService;
 import com.service.LaptopService;
 import com.service.PhoneService;
@@ -8,9 +11,9 @@ import com.model.Phone;
 
 
 public class Main {
-    private static final PhoneService PHONE_SERVICE = new PhoneService();
-    private static final LaptopService LAPTOP_SERVICE = new LaptopService();
-    private static final HeadphoneService HEADPHONE_SERVICE = new HeadphoneService();
+    private static final PhoneService PHONE_SERVICE = new PhoneService(new PhoneRepository());
+    private static final LaptopService LAPTOP_SERVICE = new LaptopService(new LaptopRepository());
+    private static final HeadphoneService HEADPHONE_SERVICE = new HeadphoneService(new HeadphoneRepository());
 
 
     public static void main(String[] args) {

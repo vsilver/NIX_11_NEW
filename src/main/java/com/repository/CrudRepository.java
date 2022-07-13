@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CrudRepository {
-    void save(Product phone);
+    void save(Product product);
 
     void saveAll(List<Product> product);
 

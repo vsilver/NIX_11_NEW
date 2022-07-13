@@ -13,8 +13,12 @@ import java.util.Random;
 
 public class HeadphoneService {
     private static final Random RANDOM = new Random();
-    private static final HeadphoneRepository REPOSITORY = new HeadphoneRepository();
+    private final HeadphoneRepository repository;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
+
+    public HeadphoneService(HeadphoneRepository repository){
+        this.repository = repository;
+    }
 
     public void createAndSaveHeadphones(int count) {
         List<Product> headphones = new LinkedList<>();
@@ -27,10 +31,10 @@ public class HeadphoneService {
                     getRandomManufacturer()
 
             );
-            logger.info(headphone + "Was Created");
+            logger.info("{} Was Created", headphone);
             headphones.add(headphone);
         }
-        REPOSITORY.saveAll(headphones);
+        repository.saveAll(headphones);
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -40,20 +44,20 @@ public class HeadphoneService {
     }
 
     public void printAll() {
-        for (Product headphone : REPOSITORY.getAll()) {
+        for (Product headphone : repository.getAll()) {
             System.out.println(headphone); // TODO: 02/07/22
         }
     }
 
     public void update(Product headphone) {
-        REPOSITORY.update(headphone);
+        repository.update(headphone);
     }
 
     public void delete(String id) {
-        REPOSITORY.delete(id);
+        repository.delete(id);
     }
 
     public List<Product> getAll() {
-        return REPOSITORY.getAll();
+        return repository.getAll();
     }
 }
