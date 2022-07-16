@@ -49,8 +49,45 @@ public class PhoneService {
 
     public void printAll() {
         for (Product phone : repository.getAll()) {
-            System.out.println(phone); // TODO: 02/07/22  
+            System.out.println(phone);
         }
+    }
+
+    public void updateIfPresent(Product phone) {
+        repository.findById(phone.getId()).ifPresent(updatedPhone -> repository.update(updatedPhone));
+    }
+
+    public Product findByIdOrCreateDefault(String id) {
+        return repository.findById(id).orElse(new Phone("", 0, 0, "Model", Manufacturer.APPLE));
+    }
+
+    public Product findByIdOrCreateRandom(String id) {
+        Optional<Product> optionalPhone = repository.findById(id);
+        return optionalPhone.orElseGet(() -> createAndSavePhone());
+    }
+
+    public String mapPhoneToString(String id) {
+        return repository.findById(id).map(p -> p.toString()).orElse("Not Found");
+    }
+
+    public void deleteIfPresentOrSave(Product phone) {
+        repository.findById(phone.getId())
+                .ifPresentOrElse(foundedBall -> repository.delete(foundedBall.getId()),
+                        () -> repository.save(phone));
+    }
+
+    public void deletePhoneMoreThen(String id, int count) {
+        repository.findById(id)
+                .filter(phone -> phone.getCount() >= count)
+                .ifPresent(foundedBall -> repository.delete(foundedBall.getId()));
+    }
+
+    public Product findById(String id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Phone not found"));
+    }
+
+    public Optional<Product> findByIdOrCreateRandomOptional(String id) {
+        return repository.findById(id).or(() -> Optional.of(createAndSavePhone()));
     }
 
     public void update(Product phone) {
@@ -72,7 +109,7 @@ public class PhoneService {
         repository.save(phone);
     }
 
-    public Optional<Product> findById(String id) {
-        return repository.findById(id);
+    Phone createAndSavePhone() {
+        return new Phone("Title", 0, 0.0, "Model", Manufacturer.APPLE);
     }
 }
