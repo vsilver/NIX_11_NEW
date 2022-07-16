@@ -3,6 +3,7 @@ package com.service;
 import com.model.Laptop;
 import com.model.Manufacturer;
 import com.repository.LaptopRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -78,6 +79,8 @@ class LaptopServiceTest {
 
     @Test
     void findById_CallRealMethod() {
-        when(target.findById(Mockito.anyString())).thenCallRealMethod();
+        when(target.findById(anyString())).thenCallRealMethod();
+        Assertions.assertThrows(RuntimeException.class, () -> target.findById(anyString()));
+
     }
 }

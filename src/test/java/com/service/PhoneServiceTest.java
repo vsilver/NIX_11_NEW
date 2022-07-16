@@ -79,17 +79,6 @@ class PhoneServiceTest {
     }
 
     @Test
-    void updateIfPresent_present() {
-        final Phone phone = target.createAndSavePhone();
-        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
-        phone.setTitle("New Phone");
-        target.updateIfPresent(phone);
-
-        verify(repository).update(phone);
-        Assertions.assertEquals("New Phone", target.findById(phone.getId()).getTitle());
-    }
-
-    @Test
     void updateIfPresent_noPhones() {
         final Phone phone = target.createAndSavePhone();
         target.updateIfPresent(phone);
@@ -237,36 +226,5 @@ class PhoneServiceTest {
         repository = mock(PhoneRepository.class);
         when(repository.findById("123")).thenCallRealMethod();
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById("123"));
-    }
-
-    @Test
-    void savePhone_zeroCount() {
-        final Phone phone = new Phone("Title", 0, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        verify(repository).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
-        Assertions.assertEquals(-1, argument.getValue().getCount());
-    }
-
-    @Test
-    void savePhone_verifyTimes() {
-        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        verify(repository, Mockito.times(1)).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
-    }
-
-    @Test
-    void savePhone() {
-        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        verify(repository).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
     }
 }

@@ -27,7 +27,7 @@ public class PhoneService {
             throw new IllegalArgumentException("count must be bigger than 0");
         }
         for (int i = 0; i < count; i++) {
-            Phone phone = new Phone(
+            final Phone phone = new Phone(
                     "Title-" + RANDOM.nextInt(1000),
                     RANDOM.nextInt(500),
                     RANDOM.nextDouble(1000.0),
