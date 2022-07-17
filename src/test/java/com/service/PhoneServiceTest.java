@@ -1,17 +1,19 @@
 package com.service;
 
-import com.model.Product;
-import com.repository.PhoneRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import com.model.Manufacturer;
 import com.model.Phone;
+import com.model.Product;
+import com.repository.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -45,13 +47,13 @@ class PhoneServiceTest {
     @Test
     void createAndSavePhones() {
         target.createAndSavePhones(2);
-        Mockito.verify(repository).saveAll(Mockito.anyList());
+        verify(repository).saveAll(Mockito.anyList());
     }
 
     @Test
     void getAll() {
         target.getAll();
-        Mockito.verify(repository).getAll();
+        verify(repository).getAll();
     }
 
     @Test
@@ -67,7 +69,7 @@ class PhoneServiceTest {
     @Test
     void printAll() {
         target.printAll();
-        Mockito.verify(repository).getAll();
+        verify(repository).getAll();
     }
 
     @Test
@@ -77,63 +79,152 @@ class PhoneServiceTest {
     }
 
     @Test
+    void updateIfPresent_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        target.updateIfPresent(phone);
+
+        verify(repository).findById(phone.getId());
+        verify(repository, times(0)).update(phone);
+    }
+
+    @Test
+    void findByIdOrCreateDefault_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        Product foundedPhone = target.findByIdOrCreateDefault(phone.getId());
+
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals("Title", foundedPhone.getTitle());
+    }
+
+    @Test
+    void findByIdOrCreateDefault_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        Product foundedBall = target.findByIdOrCreateDefault(phone.getId());
+
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals("", foundedBall.getTitle());
+        Assertions.assertEquals(0, foundedBall.getCount());
+        Assertions.assertEquals(0, foundedBall.getPrice());
+    }
+
+    @Test
+    void findByIdOrCreateRandom_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        Product foundedPhone = target.findByIdOrCreateRandom(phone.getId());
+
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals("Title", foundedPhone.getTitle());
+    }
+
+    @Test
+    void findByIdOrCreateRandom_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        Product foundedBall = target.findByIdOrCreateRandom(phone.getId());
+
+        verify(repository).findById(phone.getId());
+        Assertions.assertNotEquals(phone.getId(), foundedBall.getId());
+    }
+
+    @Test
+    void mapPhoneToString_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+
+        String actual = target.mapPhoneToString(phone.getId());
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals(phone.toString(), actual);
+    }
+
+    @Test
+    void mapPhoneToString_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        String actual = target.mapPhoneToString(phone.getId());
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals("Not Found", actual);
+    }
+
+    @Test
+    void deleteIfPresentOrSave_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        target.deleteIfPresentOrSave(phone);
+
+        verify(repository).findById(phone.getId());
+        verify(repository).delete(phone.getId());
+        verify(repository, times(0)).save(phone);
+    }
+
+    @Test
+    void deleteIfPresentOrSave_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        target.deleteIfPresentOrSave(phone);
+
+        verify(repository).findById(phone.getId());
+        verify(repository, times(0)).delete(phone.getId());
+        verify(repository).save(phone);
+    }
+
+    @Test
+    void deletePhoneMoreThen_present() {
+        final Phone phone = target.createAndSavePhone();
+        final Phone phone1 = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        target.deletePhoneMoreThen(phone.getId(), 1);
+
+        verify(repository).findById(phone.getId());
+    }
+
+    @Test
+    void deletePhoneMoreThen_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        target.deletePhoneMoreThen(phone.getId(), 2);
+
+        verify(repository).findById(phone.getId());
+        verify(repository, times(0)).delete(phone.getId());
+    }
+
+    @Test
+    void findByIdOrCreateRandomOptional_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+
+        Optional<Product> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals(phone.getId(), foundedBallOptional.get().getId());
+    }
+
+    @Test
+    void findByIdOrCreateRandomOptional_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        Optional<Product> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
+        verify(repository).findById(phone.getId());
+        Assertions.assertNotEquals(phone.getId(), foundedBallOptional.get().getId());
+    }
+
+    @Test
+    void findById_present() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        Product foundedBall = target.findById(phone.getId());
+
+        verify(repository).findById(phone.getId());
+        Assertions.assertEquals(phone.getId(), foundedBall.getId());
+    }
+
+    @Test
+    void findById_noPhones() {
+        final Phone phone = target.createAndSavePhone();
+        when(repository.findById(phone.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById(phone.getId()));
+        verify(repository).findById(phone.getId());
+    }
+
+    @Test
     void findById_CallRealMethod() {
-        when(target.findById(anyString())).thenCallRealMethod();
-        Assertions.assertThrows(RuntimeException.class, () -> target.findById(anyString()));
+        repository = mock(PhoneRepository.class);
+        when(repository.findById("123")).thenCallRealMethod();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById("123"));
     }
-
-    @Test
-    void savePhone_zeroCount() {
-        final Phone phone = new Phone("Title", 0, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        Mockito.verify(repository).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
-        Assertions.assertEquals(-1, argument.getValue().getCount());
-    }
-
-    @Test
-    void savePhone_verifyTimes() {
-        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        Mockito.verify(repository, Mockito.times(1)).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
-    }
-
-    @Test
-    void savePhone() {
-        final Phone phone = new Phone("Title", 100, 1000.0, "Model", Manufacturer.APPLE);
-        target.savePhone(phone);
-
-        ArgumentCaptor<Phone> argument = ArgumentCaptor.forClass(Phone.class);
-        Mockito.verify(repository).save(argument.capture());
-        Assertions.assertEquals("Title", argument.getValue().getTitle());
-    }
-
-    /*@Test
-    public void printIfPresent_test(String id) {
-        //target.save(phone);
-        //target.printIfPresent(phone.getId());
-        final Optional<Product> optionalPhone;
-        target.printIfPresent(phone.getId());
-        //Assertions.assertTrue(target.printIfPresent(phone.getId()));
-        *//*final Phone actualPhone = (Phone) optionalPhone.get();
-        Assertions.assertEquals(phone.getId(),actualPhone.getId());
-        return optionalPhone;*//*
-    }*/
-
-    /*@Test
-    public void printIfPresent_test_negative(String id) {
-        //target.save(phone);
-        target.printIfPresent(phone.getId());
-        //final Optional<Product> optionalPhone = target.printIfPresent(phone.getId());
-        //Assertions.assertTrue(optionalPhone.ifPresent(phone.getId()));
-        *//*final Phone actualPhone = (Phone) optionalPhone.get();
-        Assertions.assertEquals(phone.getId(),actualPhone.getId());
-        return optionalPhone;*//*
-    }*/
-
 }

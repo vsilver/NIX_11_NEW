@@ -53,106 +53,41 @@ public class PhoneService {
         }
     }
 
-    public void printIfPresent(String id) {
-        final Optional<Product> phoneOptional = repository.findById(id);
-        phoneOptional.ifPresent(phone -> {
-            System.out.println(phone);
-        });
+    public void updateIfPresent(Product phone) {
+        repository.findById(phone.getId()).ifPresent(updatedPhone -> repository.update(updatedPhone));
     }
 
-    public void printOrCreatDefault(String id) {
-        final Phone phone1 = (Phone) repository.findById(id)
-                .orElseGet(() -> createAndSavePhone());
-        System.out.println(phone1);
-
-        System.out.println("~".repeat(5));
-
-        final Phone phone2 = (Phone) repository.findById("123")
-                .orElseGet(() -> createAndSavePhone());
-        System.out.println(phone2);
+    public Product findByIdOrCreateDefault(String id) {
+        return repository.findById(id).orElse(new Phone("", 0, 0, "Model", Manufacturer.APPLE));
     }
 
-    public void printOrGetDefault(String id) {
-        final Phone phone1 = (Phone) repository.findById(id)
-                .orElse(createAndSavePhone());
-        System.out.println(phone1);
-
-        System.out.println("~".repeat(5));
-
-        final Phone phone2 = (Phone) repository.findById("123")
-                .orElse(createAndSavePhone());
-        System.out.println(phone2);
+    public Product findByIdOrCreateRandom(String id) {
+        Optional<Product> optionalPhone = repository.findById(id);
+        return optionalPhone.orElseGet(() -> createAndSavePhone());
     }
 
-    public void mapPhoneToString(String id) {
-        final String phone1 = repository.findById(id)
-                .map(p -> p.toString())
-                .orElse("Phone not found");
-        System.out.println(phone1);
-
-        System.out.println("~".repeat(5));
-
-        final String phone2 = repository.findById("112")
-                .map(p -> p.toString())
-                .orElse("Phone not found");
-        System.out.println(phone2);
+    public String mapPhoneToString(String id) {
+        return repository.findById(id).map(p -> p.toString()).orElse("Not Found");
     }
 
-    public void printOrPrintDefault(String id) {
-        repository.findById(id).ifPresentOrElse(
-                phone -> {
-                    System.out.println(phone);
-                },
-                () -> {
-                    System.out.println(createAndSavePhone());
-                }
-        );
-
-        System.out.println("~".repeat(5));
-
-        repository.findById("112").ifPresentOrElse(
-                phone -> {
-                    System.out.println(phone);
-                },
-                () -> {
-                    System.out.println(createAndSavePhone());
-                }
-        );
+    public void deleteIfPresentOrSave(Product phone) {
+        repository.findById(phone.getId())
+                .ifPresentOrElse(foundedBall -> repository.delete(foundedBall.getId()),
+                        () -> repository.save(phone));
     }
 
-    public void checksPhoneLessThen(String id, int count) {
+    public void deletePhoneMoreThen(String id, int count) {
         repository.findById(id)
-                .filter(phone -> phone.getCount() <= count)
-                .ifPresentOrElse(
-                        phone -> {
-                            System.out.println(phone);
-                        },
-                        () -> {
-                            System.out.println("Phone with count " + count + " not found");
-                        }
-                );
+                .filter(phone -> phone.getCount() >= count)
+                .ifPresent(foundedBall -> repository.delete(foundedBall.getId()));
     }
 
-    public void printPhoneOrElseThrowException(String id) {
-        final Phone phone1 = (Phone) repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Phone with id " + id + " not found"));
-        System.out.println(phone1);
-
-        System.out.println("~".repeat(5));
-
-        final Phone phone2 = (Phone) repository.findById("123")
-                .orElseThrow(() -> new IllegalArgumentException("Phone with id " + id + " not found"));
-        System.out.println(phone2);
+    public Product findById(String id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Phone not found"));
     }
 
-    public void printPhone(String id) {
-        repository.findById(id).or(() -> Optional.of(createAndSavePhone()))
-                .ifPresent(phone -> System.out.println(phone));
-
-        System.out.println("~".repeat(5));
-
-        repository.findById("123").or(() -> Optional.of(createAndSavePhone()))
-                .ifPresent(phone -> System.out.println(phone));
+    public Optional<Product> findByIdOrCreateRandomOptional(String id) {
+        return repository.findById(id).or(() -> Optional.of(createAndSavePhone()));
     }
 
     public void update(Product phone) {
@@ -174,11 +109,7 @@ public class PhoneService {
         repository.save(phone);
     }
 
-    public Optional<Product> findById(String id) {
-        return repository.findById(id);
-    }
-
-    private Phone createAndSavePhone() {
+    Phone createAndSavePhone() {
         return new Phone("Title", 0, 0.0, "Model", Manufacturer.APPLE);
     }
 }
