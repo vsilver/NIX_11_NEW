@@ -2,6 +2,7 @@ package com.service;
 
 import com.model.Manufacturer;
 import com.model.Laptop;
+import com.model.Phone;
 import com.model.Product;
 import com.repository.LaptopRepository;
 import com.repository.PhoneRepository;
@@ -13,12 +14,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class LaptopService {
+public class LaptopService extends ProductService<Laptop>{
     private static final Random RANDOM = new Random();
     private final LaptopRepository repository;
     private final Logger logger = LoggerFactory.getLogger(LaptopService.class);
 
     public LaptopService(LaptopRepository repository){
+        super(repository);
         this.repository = repository;
     }
 
@@ -26,7 +28,7 @@ public class LaptopService {
         if(count < 1){
             throw new IllegalArgumentException("count must be bigger than 0");
         }
-        List<Product> laptops = new LinkedList<>();
+        List<Laptop> laptops = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             Laptop laptop = new Laptop(
                     "Title-" + RANDOM.nextInt(1000),
@@ -48,13 +50,24 @@ public class LaptopService {
         return values[index];
     }
 
+    @Override
+    protected Laptop createProduct() {
+        return new Laptop(
+                Laptop.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
+                RANDOM.nextInt(500),
+                RANDOM.nextDouble(1000.0),
+                "Model-" + RANDOM.nextInt(10),
+                getRandomManufacturer()
+        );
+    }
+
     public void printAll() {
         for (Product laptop : repository.getAll()) {
-            System.out.println(laptop); // TODO: 02/07/22
+            System.out.println(laptop);
         }
     }
 
-    public void update(Product laptop) {
+    public void update(Laptop laptop) {
         repository.update(laptop);
     }
 
@@ -62,18 +75,18 @@ public class LaptopService {
         repository.delete(id);
     }
 
-    public List<Product> getAll() {
+    public List<Laptop> getAll() {
         return repository.getAll();
     }
 
-    public void saveLaptop(Product laptop){
+    public void saveLaptop(Laptop laptop){
         if(laptop.getCount() == 0){
             laptop.setCount(-1);
         }
         repository.save(laptop);
     }
 
-    public Optional<Product> findById(String id) {
+    /*public Optional<Laptop> findById(String id) {
         return repository.findById(id);
-    }
+    }*/
 }

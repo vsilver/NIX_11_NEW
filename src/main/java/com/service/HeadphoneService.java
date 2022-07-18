@@ -11,17 +11,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class HeadphoneService {
+public class HeadphoneService extends ProductService<Product>{
     private static final Random RANDOM = new Random();
     private final HeadphoneRepository repository;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
 
     public HeadphoneService(HeadphoneRepository repository){
+        super(repository);
         this.repository = repository;
     }
 
+    @Override
+    protected Product createProduct() {
+        return null;
+    }
+
     public void createAndSaveHeadphones(int count) {
-        List<Product> headphones = new LinkedList<>();
+        List<Headphone> headphones = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             Headphone headphone = new Headphone(
                     "Title-" + RANDOM.nextInt(1000),
@@ -45,11 +51,11 @@ public class HeadphoneService {
 
     public void printAll() {
         for (Product headphone : repository.getAll()) {
-            System.out.println(headphone); // TODO: 02/07/22
+            System.out.println(headphone);
         }
     }
 
-    public void update(Product headphone) {
+    public void update(Headphone headphone) {
         repository.update(headphone);
     }
 
@@ -57,7 +63,7 @@ public class HeadphoneService {
         repository.delete(id);
     }
 
-    public List<Product> getAll() {
+    public List<Headphone> getAll() {
         return repository.getAll();
     }
 }

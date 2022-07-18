@@ -3,6 +3,8 @@ package com.service;
 import com.model.Manufacturer;
 import com.model.Phone;
 import com.model.Product;
+import com.repository.CrudRepository;
+import com.repository.LaptopRepository;
 import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +13,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class PhoneService {
-    private static final Random RANDOM = new Random();
-    private final PhoneRepository repository;
-    private final Logger logger = LoggerFactory.getLogger(PhoneService.class);
+public class PhoneService extends ProductService<Phone> {
+    //private static final Random RANDOM = new Random();
+    //private final PhoneRepository repository;
+   // private final Logger logger = LoggerFactory.getLogger(LaptopService.class);
 
-    public PhoneService(PhoneRepository repository){
-        this.repository = repository;
+    public PhoneService(CrudRepository<Phone> repository){
+        super(repository);
+        //this.repository = repository;
     }
 
-    public void createAndSavePhones(int count) {
+    @Override
+    protected Phone createProduct() {
+        return new Phone(
+                Phone.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
+                RANDOM.nextInt(500),
+                RANDOM.nextDouble(1000.0),
+                "Model-" + RANDOM.nextInt(10),
+                getRandomManufacturer()
+        );
+    }
+
+    /*public void createAndSavePhones(int count) {
         List<Product> phones = new LinkedList<>();
         if(count < 1){
             throw new IllegalArgumentException("count must be bigger than 0");
@@ -39,7 +54,7 @@ public class PhoneService {
             phones.add(phone);
         }
         repository.saveAll(phones);
-    }
+    }*/
 
     private Manufacturer getRandomManufacturer() {
         final Manufacturer[] values = Manufacturer.values();
@@ -47,8 +62,25 @@ public class PhoneService {
         return values[index];
     }
 
+    public int getTotalPriceFor(final String id) {
+        final AtomicInteger totalPrice = new AtomicInteger(0);
+        repository.findById(id).ifPresentOrElse(
+                phone -> totalPrice.set((int) (phone.getCount() * phone.getPrice())),
+                () -> totalPrice.set(-1)
+        );
+        return totalPrice.get();
+    }
+
+    public Phone getOrCreat(final String id) {
+        return repository.findById(id).orElseGet(() -> {
+            final Phone phone = createProduct();
+            repository.save(phone);
+            return phone;
+        });
+    }
+
     public void printAll() {
-        for (Product phone : repository.getAll()) {
+        for (Phone phone : repository.getAll()) {
             System.out.println(phone);
         }
     }
@@ -82,7 +114,7 @@ public class PhoneService {
                 .ifPresent(foundedBall -> repository.delete(foundedBall.getId()));
     }
 
-    public Product findById(String id) {
+    public Phone findById(String id) {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Phone not found"));
     }
 
@@ -90,7 +122,7 @@ public class PhoneService {
         return repository.findById(id).or(() -> Optional.of(createAndSavePhone()));
     }
 
-    public void update(Product phone) {
+    public void update(Phone phone) {
         repository.update(phone);
     }
 
