@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import com.service.Container;
 
 public class LaptopService extends ProductService<Laptop>{
     private static final Random RANDOM = new Random();
@@ -22,26 +23,6 @@ public class LaptopService extends ProductService<Laptop>{
     public LaptopService(LaptopRepository repository){
         super(repository);
         this.repository = repository;
-    }
-
-    public void createAndSaveLaptops(int count) {
-        if(count < 1){
-            throw new IllegalArgumentException("count must be bigger than 0");
-        }
-        List<Laptop> laptops = new LinkedList<>();
-        for (int i = 0; i < count; i++) {
-            Laptop laptop = new Laptop(
-                    "Title-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(500),
-                    RANDOM.nextDouble(1000.0),
-                    "Model-" + RANDOM.nextInt(10),
-                    getRandomManufacturer()
-
-            );
-            logger.info("{} Was Created",laptop);
-            laptops.add(laptop);
-        }
-        repository.saveAll(laptops);
     }
 
     private Manufacturer getRandomManufacturer() {
