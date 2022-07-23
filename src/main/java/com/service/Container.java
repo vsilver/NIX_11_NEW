@@ -1,7 +1,6 @@
 package com.service;
 
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Product;
 
 import java.util.Random;
 

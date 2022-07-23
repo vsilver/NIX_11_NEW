@@ -1,13 +1,12 @@
 package com.service;
 
-import com.model.Manufacturer;
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Manufacturer;
+import com.model.product.Phone;
+import com.model.product.Product;
 import com.repository.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.Arrays;

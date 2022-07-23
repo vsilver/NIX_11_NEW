@@ -1,14 +1,13 @@
 package com.service;
 
-import com.model.Laptop;
-import com.model.Manufacturer;
+import com.model.product.Laptop;
+import com.model.product.Manufacturer;
 import com.repository.LaptopRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

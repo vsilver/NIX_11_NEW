@@ -1,7 +1,7 @@
 package com.repository;
 
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Phone;
+import com.model.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +12,17 @@ public class PhoneRepository implements CrudRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
+    private static PhoneRepository instance;
+
     public PhoneRepository() {
         phones = new LinkedList<>();
+    }
+
+    public static PhoneRepository getInstance() {
+        if (instance == null) {
+            instance = new PhoneRepository();
+        }
+        return instance;
     }
 
     @Override
@@ -88,6 +97,16 @@ public class PhoneRepository implements CrudRepository<Phone> {
             }
         }
         return Optional.ofNullable(result);
+    }
+
+    public List<Phone> findByModel(final String model) {
+        List<Phone> phoneList = new ArrayList<>(phones.size());
+        for (Phone phone : phones) {
+            if (phone.getModel().equals(model)) {
+                phoneList.add(phone);
+            }
+        }
+        return phoneList;
     }
 
     private static class PhoneCopy {

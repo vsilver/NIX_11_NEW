@@ -1,7 +1,7 @@
 package com.repository;
 
-import com.model.Laptop;
-import com.model.Product;
+import com.model.product.Laptop;
+import com.model.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
