@@ -1,25 +1,23 @@
-package com.model;
+package com.model.product;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 
-public class Laptop extends Product {
+public class Headphone extends Product {
     private final String model;
     private final Manufacturer manufacturer;
-
-
-    public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
-        super(title, count, price);
+    public Headphone(String title, int count, double price, String model, Manufacturer manufacturer) {
+        super(title, count, price, ProductType.JBL);
         this.model = model;
         this.manufacturer = manufacturer;
     }
 
     @Override
     public String toString() {
-        return "Laptop{" +
+        return "Headphones{" +
                 "manufacturer=" + manufacturer +
                 ", id='" + id + '\'' +
                 ", title='" + title + '\'' +

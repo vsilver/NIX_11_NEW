@@ -1,23 +1,32 @@
 package com.repository;
 
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Phone;
+import com.model.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import java.util.*;
 
-public class PhoneRepository implements CrudRepository {
-    private final List<Product> phones;
+public class PhoneRepository implements CrudRepository<Phone> {
+    private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
+
+    private static PhoneRepository instance;
 
     public PhoneRepository() {
         phones = new LinkedList<>();
     }
 
+    public static PhoneRepository getInstance() {
+        if (instance == null) {
+            instance = new PhoneRepository();
+        }
+        return instance;
+    }
+
     @Override
-    public void save(Product phone) {
+    public void save(Phone phone) {
         if (phone == null) {
             final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
             logger.error(exception.getMessage(), exception);
@@ -28,8 +37,15 @@ public class PhoneRepository implements CrudRepository {
         }
     }
 
-    private void checkDuplicates(Product phone) {
-        for (Product p : phones) {
+    @Override
+    public void saveAll(List<Phone> products) {
+        for (Phone phone : products) {
+            save(phone);
+        }
+    }
+
+    private void checkDuplicates(Phone phone) {
+        for (Phone p : phones) {
             if (phone.hashCode() == p.hashCode() && phone.equals(p)) {
                 final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
                         phone.getId());
@@ -40,15 +56,8 @@ public class PhoneRepository implements CrudRepository {
     }
 
     @Override
-    public void saveAll(List<Product> phones) {
-        for (Product phone : phones) {
-            save(phone);
-        }
-    }
-
-    @Override
-    public boolean update(Product phone) {
-        final Optional<Product> result = findById(phone.getId());
+    public boolean update(Phone phone) {
+        final Optional<Phone> result = findById(phone.getId());
         if (result.isEmpty()) {
             return false;
         }
@@ -59,7 +68,7 @@ public class PhoneRepository implements CrudRepository {
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Product> iterator = phones.iterator();
+        final Iterator<Phone> iterator = phones.iterator();
         while (iterator.hasNext()) {
             final Product phone = iterator.next();
             if (phone.getId().equals(id)) {
@@ -72,7 +81,7 @@ public class PhoneRepository implements CrudRepository {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Phone> getAll() {
         if (phones.isEmpty()) {
             return Collections.emptyList();
         }
@@ -80,14 +89,24 @@ public class PhoneRepository implements CrudRepository {
     }
 
     @Override
-    public Optional<Product> findById(String id) {
-        Product result = null;
+    public Optional<Phone> findById(String id) {
+        Phone result = null;
         for (Product phone : phones) {
             if (phone.getId().equals(id)) {
-                result = phone;
+                result = (Phone) phone;
             }
         }
         return Optional.ofNullable(result);
+    }
+
+    public List<Phone> findByModel(final String model) {
+        List<Phone> phoneList = new ArrayList<>(phones.size());
+        for (Phone phone : phones) {
+            if (phone.getModel().equals(model)) {
+                phoneList.add(phone);
+            }
+        }
+        return phoneList;
     }
 
     private static class PhoneCopy {

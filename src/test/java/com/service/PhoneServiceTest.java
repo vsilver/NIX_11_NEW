@@ -1,13 +1,12 @@
 package com.service;
 
-import com.model.Manufacturer;
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Manufacturer;
+import com.model.product.Phone;
+import com.model.product.Product;
 import com.repository.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -36,17 +35,17 @@ class PhoneServiceTest {
 
     @Test
     void createAndSavePhones_negativeCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSavePhones(-1));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(-1));
     }
 
     @Test
     void createAndSavePhone_zeroCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSavePhones(0));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(0));
     }
 
     @Test
     void createAndSavePhones() {
-        target.createAndSavePhones(2);
+        target.createAndSave(2);
         verify(repository).saveAll(Mockito.anyList());
     }
 
@@ -74,7 +73,7 @@ class PhoneServiceTest {
 
     @Test
     void getAll_noPhones() {
-        final List<Product> actualResult = target.getAll();
+        final List<Phone> actualResult = target.getAll();
         Assertions.assertEquals(0, actualResult.size());
     }
 
@@ -190,7 +189,7 @@ class PhoneServiceTest {
         final Phone phone = target.createAndSavePhone();
         when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
 
-        Optional<Product> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
+        Optional<Phone> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
         verify(repository).findById(phone.getId());
         Assertions.assertEquals(phone.getId(), foundedBallOptional.get().getId());
     }
@@ -198,7 +197,7 @@ class PhoneServiceTest {
     @Test
     void findByIdOrCreateRandomOptional_noPhones() {
         final Phone phone = target.createAndSavePhone();
-        Optional<Product> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
+        Optional<Phone> foundedBallOptional = target.findByIdOrCreateRandomOptional(phone.getId());
         verify(repository).findById(phone.getId());
         Assertions.assertNotEquals(phone.getId(), foundedBallOptional.get().getId());
     }

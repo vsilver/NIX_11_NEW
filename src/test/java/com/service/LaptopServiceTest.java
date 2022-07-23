@@ -1,14 +1,13 @@
 package com.service;
 
-import com.model.Laptop;
-import com.model.Manufacturer;
+import com.model.product.Laptop;
+import com.model.product.Manufacturer;
 import com.repository.LaptopRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,17 +26,17 @@ class LaptopServiceTest {
 
     @Test
     void createAndSaveLaptops_negativeCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSaveLaptops(-1));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(-1));
     }
 
     @Test
     void createAndSaveLaptops_zeroCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSaveLaptops(0));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(0));
     }
 
     @Test
     void createAndSaveLaptops() {
-        target.createAndSaveLaptops(3);
+        target.createAndSave(3);
         verify(repository, times(1)).saveAll(anyList());
     }
 
