@@ -10,7 +10,7 @@ public class Headphone extends Product {
     private final String model;
     private final Manufacturer manufacturer;
     public Headphone(String title, int count, double price, String model, Manufacturer manufacturer) {
-        super(title, count, price, ProductType.JBL);
+        super(title, count, price, ProductType.HEADPHONE);
         this.model = model;
         this.manufacturer = manufacturer;
     }

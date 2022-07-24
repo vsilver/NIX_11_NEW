@@ -11,6 +11,7 @@ public class HeadphoneRepository implements CrudRepository<Headphone> {
 
     private final List<Headphone> headphones;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneRepository.class);
+    private static HeadphoneRepository instance;
 
     public HeadphoneRepository() {
         headphones = new LinkedList<>();
@@ -26,6 +27,13 @@ public class HeadphoneRepository implements CrudRepository<Headphone> {
             checkDuplicates(headphone);
             headphones.add(headphone);
         }
+    }
+
+    public static HeadphoneRepository getInstance() {
+        if (instance == null) {
+            instance = new HeadphoneRepository();
+        }
+        return instance;
     }
 
     @Override

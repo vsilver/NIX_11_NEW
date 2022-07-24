@@ -9,6 +9,7 @@ import java.util.*;
 public class TVRepository implements CrudRepository<TV>{
     private static final Logger LOGGER = LoggerFactory.getLogger(TVRepository.class);
     private final List<TV> tvList;
+    private static TVRepository instance;
 
     public TVRepository() {
         tvList = new LinkedList<>();
@@ -24,6 +25,13 @@ public class TVRepository implements CrudRepository<TV>{
             checkDuplicates(product);
             tvList.add(product);
         }
+    }
+
+    public static TVRepository getInstance() {
+        if (instance == null) {
+            instance = new TVRepository();
+        }
+        return instance;
     }
 
     private void checkDuplicates(TV phone) {

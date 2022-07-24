@@ -1,5 +1,6 @@
 package com;
 
+import com.controller.Controller;
 import com.model.Order;
 import com.model.ProductComparator;
 import com.model.product.Phone;
@@ -25,12 +26,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Controller.run();
+
         /*PHONE_SERVICE.createAndSave(2);
         LAPTOP_SERVICE.createAndSave(2);
         HEADPHONE_SERVICE.createAndSave(2);
         TV_SERVICE.createAndSave(2);*/
 
-        PRODUCT_VERSION_SERVICE.addFirst(TV_SERVICE.createProduct(), 1);
+        /*PRODUCT_VERSION_SERVICE.addFirst(TV_SERVICE.createProduct(), 1);
         PRODUCT_VERSION_SERVICE.addFirst(TV_SERVICE.createProduct(), 10);
         PRODUCT_VERSION_SERVICE.addFirst(TV_SERVICE.createProduct(), 100);
         PRODUCT_VERSION_SERVICE.addFirst(TV_SERVICE.createProduct(), 1000);
@@ -64,10 +67,7 @@ public class Main {
         Set<Product> tvSet = new TreeSet<>(new ProductComparator<>());
         tvSet.addAll(TV_SERVICE.findAll());
         tvSet.forEach(System.out::println);
-        System.out.println("-----------------------------------");
-
-
-
+        System.out.println("-----------------------------------");*/
 
 
         /*final List<TV> tvs = TV_SERVICE.findAll();
