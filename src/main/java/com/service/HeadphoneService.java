@@ -7,34 +7,28 @@ import com.repository.HeadphoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class HeadphoneService {
+public class HeadphoneService extends ProductService<Headphone>{
     private static final Random RANDOM = new Random();
     private final HeadphoneRepository repository;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
 
     public HeadphoneService(HeadphoneRepository repository){
+        super(repository);
         this.repository = repository;
     }
 
-    public void createAndSaveHeadphones(int count) {
-        List<Product> headphones = new LinkedList<>();
-        for (int i = 0; i < count; i++) {
-            Headphone headphone = new Headphone(
-                    "Title-" + RANDOM.nextInt(1000),
-                    RANDOM.nextInt(500),
-                    RANDOM.nextDouble(1000.0),
-                    "Model-" + RANDOM.nextInt(10),
-                    getRandomManufacturer()
-
-            );
-            logger.info("{} Was Created", headphone);
-            headphones.add(headphone);
-        }
-        repository.saveAll(headphones);
+    @Override
+    protected Headphone createProduct() {
+        return new Headphone(
+                Headphone.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
+                RANDOM.nextInt(500),
+                RANDOM.nextDouble(1000.0),
+                "Model-" + RANDOM.nextInt(10),
+                getRandomManufacturer()
+        );
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -45,11 +39,11 @@ public class HeadphoneService {
 
     public void printAll() {
         for (Product headphone : repository.getAll()) {
-            System.out.println(headphone); // TODO: 02/07/22
+            System.out.println(headphone);
         }
     }
 
-    public void update(Product headphone) {
+    public void update(Headphone headphone) {
         repository.update(headphone);
     }
 
@@ -57,7 +51,7 @@ public class HeadphoneService {
         repository.delete(id);
     }
 
-    public List<Product> getAll() {
+    public List<Headphone> getAll() {
         return repository.getAll();
     }
 }

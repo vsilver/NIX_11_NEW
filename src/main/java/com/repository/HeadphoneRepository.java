@@ -1,15 +1,16 @@
 package com.repository;
 
 import com.model.Headphone;
+import com.model.Phone;
 import com.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class HeadphoneRepository implements CrudRepository {
+public class HeadphoneRepository implements CrudRepository<Headphone> {
 
-    private final List<Product> headphones;
+    private final List<Headphone> headphones;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneRepository.class);
 
     public HeadphoneRepository() {
@@ -17,20 +18,38 @@ public class HeadphoneRepository implements CrudRepository {
     }
 
     @Override
-    public void save(Product headphone) {
-        headphones.add(headphone);
-    }
-
-    @Override
-    public void saveAll(List<Product> headphones) {
-        for (Product headphone : headphones) {
-            save(headphone);
+    public void save(Headphone headphone) {
+        if (headphone == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(headphone);
+            headphones.add(headphone);
         }
     }
 
     @Override
-    public boolean update(Product headphone) {
-        final Optional<Product> result = findById(headphone.getId());
+    public void saveAll(List<Headphone> headphones) {
+        for (Headphone headphone : headphones) {
+            save(headphone);
+        }
+    }
+
+    private void checkDuplicates(Headphone headphone) {
+        for (Headphone p : headphones) {
+            if (headphone.hashCode() == p.hashCode() && headphone.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
+                        headphone.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
+    }
+
+    @Override
+    public boolean update(Headphone headphone) {
+        final Optional<Headphone> result = findById(headphone.getId());
         if (result.isEmpty()) {
             return false;
         }
@@ -41,7 +60,7 @@ public class HeadphoneRepository implements CrudRepository {
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Product> iterator = headphones.iterator();
+        final Iterator<Headphone> iterator = headphones.iterator();
         while (iterator.hasNext()) {
             final Product headphone = iterator.next();
             if (headphone.getId().equals(id)) {
@@ -54,7 +73,7 @@ public class HeadphoneRepository implements CrudRepository {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Headphone> getAll() {
         if (headphones.isEmpty()) {
             return Collections.emptyList();
         }
@@ -62,9 +81,9 @@ public class HeadphoneRepository implements CrudRepository {
     }
 
     @Override
-    public Optional<Product> findById(String id) {
-        Product result = null;
-        for (Product headphone : headphones) {
+    public Optional<Headphone> findById(String id) {
+        Headphone result = null;
+        for (Headphone headphone : headphones) {
             if (headphone.getId().equals(id)) {
                 result = headphone;
             }

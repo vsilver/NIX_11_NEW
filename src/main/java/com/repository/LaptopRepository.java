@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class LaptopRepository implements CrudRepository {
+public class LaptopRepository implements CrudRepository<Laptop> {
 
-    private final List<Product> laptops;
+    private final List<Laptop> laptops;
     private final Logger logger = LoggerFactory.getLogger(LaptopRepository.class);
 
     public LaptopRepository() {
@@ -17,21 +17,39 @@ public class LaptopRepository implements CrudRepository {
     }
 
     @Override
-    public void save(Product laptop) {
-        laptops.add(laptop);
+    public void save(Laptop laptop) {
+        if (laptop == null) {
+            final IllegalArgumentException exception = new IllegalArgumentException("Cannot save a null phone");
+            logger.error(exception.getMessage(), exception);
+            throw exception;
+        } else {
+            checkDuplicates(laptop);
+            laptops.add(laptop);
+        }
 
     }
 
+    private void checkDuplicates(Laptop laptop) {
+        for (Laptop p : laptops) {
+            if (laptop.hashCode() == p.hashCode() && laptop.equals(p)) {
+                final IllegalArgumentException exception = new IllegalArgumentException("Duplicate phone: " +
+                        laptop.getId());
+                logger.error(exception.getMessage(), exception);
+                throw exception;
+            }
+        }
+    }
+
     @Override
-    public void saveAll(List<Product> laptops) {
-        for (Product laptop : laptops) {
+    public void saveAll(List<Laptop> laptops) {
+        for (Laptop laptop : laptops) {
             save(laptop);
         }
     }
 
     @Override
-    public boolean update(Product laptop) {
-        final Optional<Product> result = findById(laptop.getId());
+    public boolean update(Laptop laptop) {
+        final Optional<Laptop> result = findById(laptop.getId());
         if (result.isEmpty()) {
             return false;
         }
@@ -42,9 +60,9 @@ public class LaptopRepository implements CrudRepository {
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Product> iterator = laptops.iterator();
+        final Iterator<Laptop> iterator = laptops.iterator();
         while (iterator.hasNext()) {
-            final Product laptop = iterator.next();
+            final Laptop laptop = iterator.next();
             if (laptop.getId().equals(id)) {
                 logger.info( laptop + " Was deleted ");
                 iterator.remove();
@@ -55,7 +73,7 @@ public class LaptopRepository implements CrudRepository {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Laptop> getAll() {
         if (laptops.isEmpty()) {
             return Collections.emptyList();
         }
@@ -63,9 +81,9 @@ public class LaptopRepository implements CrudRepository {
     }
 
     @Override
-    public Optional<Product> findById(String id) {
-        Product result = null;
-        for (Product laptop : laptops) {
+    public Optional<Laptop> findById(String id) {
+        Laptop result = null;
+        for (Laptop laptop : laptops) {
             if (laptop.getId().equals(id)) {
                 result = laptop;
             }

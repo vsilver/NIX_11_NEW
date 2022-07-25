@@ -27,17 +27,17 @@ class LaptopServiceTest {
 
     @Test
     void createAndSaveLaptops_negativeCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSaveLaptops(-1));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(-1));
     }
 
     @Test
     void createAndSaveLaptops_zeroCount() {
-        assertThrows(IllegalArgumentException.class, () -> target.createAndSaveLaptops(0));
+        assertThrows(IllegalArgumentException.class, () -> target.createAndSave(0));
     }
 
     @Test
     void createAndSaveLaptops() {
-        target.createAndSaveLaptops(3);
+        target.createAndSave(3);
         verify(repository, times(1)).saveAll(anyList());
     }
 
