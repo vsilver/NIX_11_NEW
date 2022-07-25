@@ -1,19 +1,14 @@
 package com.service;
 
-import com.model.Manufacturer;
-import com.model.Laptop;
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Manufacturer;
+import com.model.product.Laptop;
+import com.model.product.Product;
 import com.repository.LaptopRepository;
-import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import com.service.Container;
 
 public class LaptopService extends ProductService<Laptop>{
     private static final Random RANDOM = new Random();

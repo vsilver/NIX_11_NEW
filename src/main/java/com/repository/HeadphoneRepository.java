@@ -1,8 +1,7 @@
 package com.repository;
 
-import com.model.Headphone;
-import com.model.Phone;
-import com.model.Product;
+import com.model.product.Headphone;
+import com.model.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

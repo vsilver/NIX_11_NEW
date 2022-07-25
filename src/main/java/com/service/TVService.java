@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.TV;
+import com.model.product.TV;
 import com.repository.CrudRepository;
 
 public class TVService extends ProductService<TV>{
@@ -10,7 +10,7 @@ public class TVService extends ProductService<TV>{
     }
 
     @Override
-    protected TV createProduct() {
+    public TV createProduct() {
         return new TV(
                 TV.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
                 RANDOM.nextInt(500),
