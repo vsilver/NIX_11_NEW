@@ -1,18 +1,11 @@
 package com;
 
 import com.controller.Controller;
-import com.model.Order;
-import com.model.ProductComparator;
+import com.model.product.Laptop;
 import com.model.product.Phone;
-import com.model.product.Product;
-import com.model.product.TV;
 import com.repository.*;
 import com.service.*;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import com.util.BinaryTree;
 
 
 public class Main {
@@ -23,10 +16,25 @@ public class Main {
     private static final Container container = new Container();
     private static final OrderService ORDER_SERVICE = new OrderService();
     private static final ProductVersionService PRODUCT_VERSION_SERVICE = new ProductVersionService<>();
+    private static final BinaryTree BINARY_TREE = new BinaryTree<>();
 
     public static void main(String[] args) {
 
-        Controller.run();
+        LaptopService laptopService = new LaptopService(new LaptopRepository());
+        laptopService.createAndSave(20);
+        BinaryTree<Laptop> laptopTree = new BinaryTree<>();
+        for (Laptop laptop : laptopService.findAll()) {
+            laptopTree.add(laptop);
+        }
+
+        laptopTree.print(System.out);
+
+        System.out.println("-----------------------------------");
+        System.out.println("Left branch sum: " + laptopTree.sumLeftBranch());
+        System.out.println("Right branch sum: " + laptopTree.sumRightBranch());
+        System.out.println("-----------------------------------");
+
+        /*Controller.run();*/
 
         /*PHONE_SERVICE.createAndSave(2);
         LAPTOP_SERVICE.createAndSave(2);
