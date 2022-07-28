@@ -7,6 +7,8 @@ import com.repository.*;
 import com.service.*;
 import com.util.BinaryTree;
 
+import java.util.List;
+
 
 public class Main {
     private static final PhoneService PHONE_SERVICE = new PhoneService(new PhoneRepository());
@@ -20,7 +22,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        LaptopService laptopService = new LaptopService(new LaptopRepository());
+        PHONE_SERVICE.createAndSave(20);
+        final List<Phone> phones = PHONE_SERVICE.findAll();
+        PHONE_SERVICE.getProductWithExpensivePrice(50);
+        System.out.println("Total sum of products = " + PHONE_SERVICE.countSumProducts());
+        System.out.println("Sorted and distinct products = " + PHONE_SERVICE.sortDistinctProduct());
+        System.out.println("Check Title details exist = " + PHONE_SERVICE.checkDetailExists("title"));
+        System.out.printf("Price statistic = " + PHONE_SERVICE.getPriceStatistic());
+
+
+        /*LaptopService laptopService = new LaptopService(new LaptopRepository());
         laptopService.createAndSave(20);
         BinaryTree<Laptop> laptopTree = new BinaryTree<>();
         for (Laptop laptop : laptopService.findAll()) {
@@ -32,7 +43,7 @@ public class Main {
         System.out.println("-----------------------------------");
         System.out.println("Left branch sum: " + laptopTree.sumLeftBranch());
         System.out.println("Right branch sum: " + laptopTree.sumRightBranch());
-        System.out.println("-----------------------------------");
+        System.out.println("-----------------------------------");*/
 
         /*Controller.run();*/
 

@@ -5,9 +5,10 @@ import com.model.product.Phone;
 import com.model.product.Product;
 import com.repository.PhoneRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 public class PhoneService extends ProductService<Phone> {
 
@@ -34,6 +35,8 @@ public class PhoneService extends ProductService<Phone> {
         return instance;
     }
 
+    private List<String> details = Arrays.asList("one", "two", "three");
+
 
     @Override
     public Phone createProduct() {
@@ -43,7 +46,7 @@ public class PhoneService extends ProductService<Phone> {
                 RANDOM.nextDouble(1000.0),
                 "Model-" + RANDOM.nextInt(10),
                 getRandomManufacturer()
-        );
+                );
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -141,5 +144,12 @@ public class PhoneService extends ProductService<Phone> {
 
     Phone createAndSavePhone() {
         return new Phone("Title", 0, 0.0, "Model", Manufacturer.APPLE);
+    }
+
+    public boolean checkDetailExists(String detailToCheck) {
+        return findAll()
+                .stream()
+                .flatMap(phone -> phone.getDetails().stream())
+                .anyMatch(detail -> detail.equals(detailToCheck));
     }
 }

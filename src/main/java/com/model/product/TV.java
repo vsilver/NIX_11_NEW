@@ -3,9 +3,13 @@ package com.model.product;
 import java.util.Comparator;
 
 public class TV extends Product {
+    private final String model;
+    private final Manufacturer manufacturer;
 
-    public TV(String title, int count, double price) {
-        super(title, count, price, ProductType.TV);
+    public TV(String title, int count, double price, String model, Manufacturer manufacturer) {
+        super(title, count, price, ProductType.PHONE);
+        this.model = model;
+        this.manufacturer = manufacturer;
     }
 
     public static class TVComparator implements Comparator<TV> {
@@ -18,11 +22,12 @@ public class TV extends Product {
     @Override
     public String toString() {
         return "TV{" +
-                "id='" + id + '\'' +
+                "manufacturer=" + manufacturer +
+                ", id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", count=" + count +
                 ", price=" + price +
-                ", type=" + type +
+                ", model=" + model +
                 '}';
     }
 }
