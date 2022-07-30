@@ -2,6 +2,7 @@ package com;
 
 import com.controller.Controller;
 import com.model.product.Laptop;
+import com.model.product.Manufacturer;
 import com.model.product.Phone;
 import com.repository.*;
 import com.service.*;
@@ -23,11 +24,14 @@ public class Main {
     public static void main(String[] args) {
 
         PHONE_SERVICE.createAndSave(20);
-        final List<Phone> phones = PHONE_SERVICE.findAll();
         PHONE_SERVICE.getProductWithExpensivePrice(50);
         System.out.println("Total sum of products = " + PHONE_SERVICE.countSumProducts());
         System.out.println("Sorted and distinct products = " + PHONE_SERVICE.sortDistinctProduct());
-        System.out.println("Check Title details exist = " + PHONE_SERVICE.checkDetailExists("title"));
+        List<String> details = List.of("new", "old", "used");
+
+        Phone phone = new Phone("Title", 50, 700, "Model123", Manufacturer.APPLE, details);
+        PHONE_SERVICE.save(phone);
+        System.out.println("Check Title details exist = " + PHONE_SERVICE.checkDetailExists("used"));
         System.out.printf("Price statistic = " + PHONE_SERVICE.getPriceStatistic());
 
 

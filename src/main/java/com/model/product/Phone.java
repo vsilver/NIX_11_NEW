@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Phone extends Product implements Comparable<Phone>{
     private final String model;
     private final Manufacturer manufacturer;
-    private List<String> details;
+    private List<String> details = new ArrayList<>();
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer) {
         super(title, count, price, ProductType.PHONE);
@@ -50,7 +50,6 @@ public class Phone extends Product implements Comparable<Phone>{
                 ", count=" + count +
                 ", price=" + price +
                 ", model=" + model +
-                ", details=" + details +
                 '}';
     }
 

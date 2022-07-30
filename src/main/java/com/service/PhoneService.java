@@ -35,9 +35,6 @@ public class PhoneService extends ProductService<Phone> {
         return instance;
     }
 
-    private List<String> details = Arrays.asList("one", "two", "three");
-
-
     @Override
     public Phone createProduct() {
         return new Phone(
@@ -145,6 +142,10 @@ public class PhoneService extends ProductService<Phone> {
     Phone createAndSavePhone() {
         return new Phone("Title", 0, 0.0, "Model", Manufacturer.APPLE);
     }
+
+    /*private List<String> details = List.of("new", "old", "used");
+
+    Phone phone = new Phone("Title", 50, 700, "Model123", Manufacturer.APPLE, details);*/
 
     public boolean checkDetailExists(String detailToCheck) {
         return findAll()
