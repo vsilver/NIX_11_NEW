@@ -7,8 +7,12 @@ import com.model.product.Phone;
 import com.repository.*;
 import com.service.*;
 import com.util.BinaryTree;
+import com.util.Parser;
 
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Main {
@@ -23,7 +27,25 @@ public class Main {
 
     public static void main(String[] args) {
 
-        PHONE_SERVICE.createAndSave(20);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStreamXML = classLoader.getResourceAsStream("phone.xml");
+        InputStream inputStreamJSON = classLoader.getResourceAsStream("phone.json");
+
+        List<String> lines = Parser.readAllLinesXML(inputStreamXML);
+        Map<String, String> fields = new HashMap<>();
+        Parser.parseLinesFromXMLToMap(lines, fields);
+        Phone phone = Parser.phoneMapper(fields);
+        System.out.println("XML phone : " + phone);
+
+        lines = Parser.readAllLinesJSON(inputStreamJSON);
+        Parser.parseLinesFromJSONToMap(lines, fields);
+        Phone phoneJSON = Parser.phoneMapper(fields);
+        System.out.println("JSON phone : " + phoneJSON);
+
+        //src/main/resources/phone.json
+        //src/main/resources/phone.xml
+
+        /*PHONE_SERVICE.createAndSave(20);
         PHONE_SERVICE.getProductWithExpensivePrice(50);
         System.out.println("Total sum of products = " + PHONE_SERVICE.countSumProducts());
         System.out.println("Sorted and distinct products = " + PHONE_SERVICE.sortDistinctProduct());
@@ -32,7 +54,7 @@ public class Main {
         Phone phone = new Phone("Title", 50, 700, "Model123", Manufacturer.APPLE, details);
         PHONE_SERVICE.save(phone);
         System.out.println("Check Title details exist = " + PHONE_SERVICE.checkDetailExists("used"));
-        System.out.printf("Price statistic = " + PHONE_SERVICE.getPriceStatistic());
+        System.out.printf("Price statistic = " + PHONE_SERVICE.getPriceStatistic());*/
 
 
         /*LaptopService laptopService = new LaptopService(new LaptopRepository());

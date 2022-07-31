@@ -3,6 +3,7 @@ package com.model.product;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,9 @@ public class Phone extends Product implements Comparable<Phone>{
     private final String model;
     private final Manufacturer manufacturer;
     private List<String> details = new ArrayList<>();
+    private OperationSystem operationSystem;
+    private LocalDateTime creatingDate;
+    private String currency;
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer) {
         super(title, count, price, ProductType.PHONE);
@@ -26,6 +30,15 @@ public class Phone extends Product implements Comparable<Phone>{
         this.model = model;
         this.manufacturer = manufacturer;
         this.details = details;
+    }
+
+    public Phone(String title, int count, long price, String model, Manufacturer manufacturer, LocalDateTime creatingDate, String currency, OperationSystem operationSystem) {
+        super(title, count, price, ProductType.LAPTOP);
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.creatingDate = creatingDate;
+        this.currency = currency;
+        this.operationSystem = operationSystem;
     }
 
     @Override
