@@ -1,19 +1,21 @@
 package com.service;
 
-import com.model.product.Product;
+import com.model.product.*;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class ProductService<T extends Product>  {
 
     protected static final Random RANDOM = new Random();
     protected final CrudRepository<T> repository;
     private final Logger logger = LoggerFactory.getLogger(ProductService.class);
+    private BiPredicate<T, Long> checkPriceExpensive = (product, currentPrice) -> product.getPrice() > currentPrice;
 
     protected ProductService(CrudRepository<T> repository){
         this.repository =  repository;
@@ -63,4 +65,63 @@ public abstract class ProductService<T extends Product>  {
         repository.save(product);
     }
 
+    public void getProductWithExpensivePrice(long currentPrice){
+        repository.getAll()
+                .stream()
+                .filter(product -> checkPriceExpensive.test(product, currentPrice))
+                .forEach(product -> System.out.println(product.getTitle() + " price: " + product.getPrice()));
+    }
+    public int countSumProducts() {
+        return repository.getAll()
+                .stream()
+                .map(Product::getCount)
+                .reduce(0, Integer::sum);
+    }
+
+    public Map<String, String> sortDistinctProduct(){
+        return repository.getAll()
+                .stream()
+                .sorted(Comparator.comparing(Product::getTitle))
+                .distinct()
+                .collect(Collectors.toMap(Product::getId, product -> product.getClass().getSimpleName(), (o1, o2) -> o2));
+    }
+
+    public LongSummaryStatistics getPriceStatistic() {
+        return repository.getAll()
+                .stream()
+                .mapToLong(Product::getPrice)
+                .summaryStatistics();
+    }
+
+    public Product mapProduct(Map<String, Object> fields) {
+        Function<Map<String, Object>, Product> mapToProduct = (map) -> {
+            Object productType = map.get("productType");
+            if (productType instanceof ProductType type) {
+                return switch (type) {
+                    case PHONE -> new Phone(map.getOrDefault("title", "Default").toString(),
+                            (Integer) map.getOrDefault("count", 0),
+                            (Long) map.getOrDefault("price", 0L),
+                            map.getOrDefault("model", "Default").toString(),
+                            Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
+                    case LAPTOP -> new Laptop(map.getOrDefault("title", "Default").toString(),
+                            (Integer) map.getOrDefault("count", 0),
+                            (Long) map.getOrDefault("price", 0L),
+                            map.getOrDefault("model", "Default").toString(),
+                            Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
+                    case HEADPHONE -> new Headphone(map.getOrDefault("title", "Default").toString(),
+                            (Integer) map.getOrDefault("count", 0),
+                            (Long) map.getOrDefault("price", 0L),
+                            map.getOrDefault("model", "Default").toString(),
+                            Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
+                    case TV -> new TV(map.getOrDefault("title", "Default").toString(),
+                            (Integer) map.getOrDefault("count", 0),
+                            (Long) map.getOrDefault("price", 0L),
+                            map.getOrDefault("model", "Default").toString(),
+                            Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
+                };
+            }
+            throw new IllegalArgumentException();
+        };
+        return mapToProduct.apply(fields);
+    }
 }

@@ -2,10 +2,13 @@ package com;
 
 import com.controller.Controller;
 import com.model.product.Laptop;
+import com.model.product.Manufacturer;
 import com.model.product.Phone;
 import com.repository.*;
 import com.service.*;
 import com.util.BinaryTree;
+
+import java.util.List;
 
 
 public class Main {
@@ -20,7 +23,19 @@ public class Main {
 
     public static void main(String[] args) {
 
-        LaptopService laptopService = new LaptopService(new LaptopRepository());
+        PHONE_SERVICE.createAndSave(20);
+        PHONE_SERVICE.getProductWithExpensivePrice(50);
+        System.out.println("Total sum of products = " + PHONE_SERVICE.countSumProducts());
+        System.out.println("Sorted and distinct products = " + PHONE_SERVICE.sortDistinctProduct());
+        List<String> details = List.of("new", "old", "used");
+
+        Phone phone = new Phone("Title", 50, 700, "Model123", Manufacturer.APPLE, details);
+        PHONE_SERVICE.save(phone);
+        System.out.println("Check Title details exist = " + PHONE_SERVICE.checkDetailExists("used"));
+        System.out.printf("Price statistic = " + PHONE_SERVICE.getPriceStatistic());
+
+
+        /*LaptopService laptopService = new LaptopService(new LaptopRepository());
         laptopService.createAndSave(20);
         BinaryTree<Laptop> laptopTree = new BinaryTree<>();
         for (Laptop laptop : laptopService.findAll()) {
@@ -32,7 +47,7 @@ public class Main {
         System.out.println("-----------------------------------");
         System.out.println("Left branch sum: " + laptopTree.sumLeftBranch());
         System.out.println("Right branch sum: " + laptopTree.sumRightBranch());
-        System.out.println("-----------------------------------");
+        System.out.println("-----------------------------------");*/
 
         /*Controller.run();*/
 
