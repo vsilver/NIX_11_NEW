@@ -11,9 +11,16 @@ public class LaptopRepository implements CrudRepository<Laptop> {
 
     private final List<Laptop> laptops;
     private final Logger logger = LoggerFactory.getLogger(LaptopRepository.class);
+    private static LaptopRepository instance;
 
     public LaptopRepository() {
         laptops = new LinkedList<>();
+    }
+    public static LaptopRepository getInstance() {
+        if (instance == null) {
+            instance = new LaptopRepository();
+        }
+        return instance;
     }
 
     @Override

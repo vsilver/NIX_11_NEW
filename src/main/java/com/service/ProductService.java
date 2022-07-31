@@ -32,7 +32,7 @@ public abstract class ProductService<T extends Product>  {
         repository.saveAll(products);
     }
 
-    protected abstract T createProduct();
+    public abstract T createProduct();
 
     public void printAll() {
         for (T phone : repository.getAll()) {

@@ -4,6 +4,7 @@ import com.model.product.Manufacturer;
 import com.model.product.Laptop;
 import com.model.product.Product;
 import com.repository.LaptopRepository;
+import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ public class LaptopService extends ProductService<Laptop>{
     private static final Random RANDOM = new Random();
     private final LaptopRepository repository;
     private final Logger logger = LoggerFactory.getLogger(LaptopService.class);
+    private static LaptopService instance;
 
     public LaptopService(LaptopRepository repository){
         super(repository);
@@ -27,7 +29,7 @@ public class LaptopService extends ProductService<Laptop>{
     }
 
     @Override
-    protected Laptop createProduct() {
+    public Laptop createProduct() {
         return new Laptop(
                 Laptop.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
                 RANDOM.nextInt(500),
@@ -35,6 +37,13 @@ public class LaptopService extends ProductService<Laptop>{
                 "Model-" + RANDOM.nextInt(10),
                 getRandomManufacturer()
         );
+    }
+
+    public static LaptopService getInstance() {
+        if (instance == null) {
+            instance = new LaptopService(LaptopRepository.getInstance());
+        }
+        return instance;
     }
 
     public void printAll() {

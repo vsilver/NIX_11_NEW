@@ -12,7 +12,7 @@ public class Laptop extends Product {
 
 
     public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
-        super(title, count, price, ProductType.SAMSUNG);
+        super(title, count, price, ProductType.LAPTOP);
         this.model = model;
         this.manufacturer = manufacturer;
     }

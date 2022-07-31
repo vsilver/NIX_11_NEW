@@ -36,7 +36,7 @@ public class PhoneService extends ProductService<Phone> {
 
 
     @Override
-    protected Phone createProduct() {
+    public Phone createProduct() {
         return new Phone(
                 Phone.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
                 RANDOM.nextInt(500),

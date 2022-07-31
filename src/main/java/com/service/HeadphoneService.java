@@ -4,6 +4,7 @@ import com.model.product.Headphone;
 import com.model.product.Manufacturer;
 import com.model.product.Product;
 import com.repository.HeadphoneRepository;
+import com.repository.LaptopRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +15,22 @@ public class HeadphoneService extends ProductService<Headphone>{
     private static final Random RANDOM = new Random();
     private final HeadphoneRepository repository;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
+    private static HeadphoneService instance;
 
     public HeadphoneService(HeadphoneRepository repository){
         super(repository);
         this.repository = repository;
     }
 
+    public static HeadphoneService getInstance() {
+        if (instance == null) {
+            instance = new HeadphoneService(HeadphoneRepository.getInstance());
+        }
+        return instance;
+    }
+
     @Override
-    protected Headphone createProduct() {
+    public Headphone createProduct() {
         return new Headphone(
                 Headphone.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
                 RANDOM.nextInt(500),
