@@ -22,7 +22,7 @@ public final class Parser {
     private Parser(){
     }
 
-    public static void parseLinesFromJSONToMap(List<String> lines, Map<String, String> fields) {
+    public static void readLinesFromJSON(List<String> lines, Map<String, String> fields) {
         Pattern pattern = Pattern.compile("\"\\w+\": \".*\"");
         lines.stream()
                 .map(String::trim)
@@ -62,7 +62,7 @@ public final class Parser {
         return lines;
     }
 
-    public static void parseLinesFromXMLToMap(List<String> lines, Map<String, String> fields) {
+    public static void readLinesFromXML(List<String> lines, Map<String, String> fields) {
         lines.stream()
                 .map(String::trim)
                 .forEach(line -> {
