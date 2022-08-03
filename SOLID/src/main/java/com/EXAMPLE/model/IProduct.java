@@ -1,6 +1,4 @@
-package com.EXAMPLE.moDEL;
-
-import java.util.List;
+package com.EXAMPLE.model;
 
 public interface IProduct {
 

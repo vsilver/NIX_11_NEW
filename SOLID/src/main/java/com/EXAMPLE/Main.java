@@ -1,8 +1,10 @@
 package com.EXAMPLE;
 
-import com.EXAMPLE.moDEL.NotifiableProduct;
-import com.EXAMPLE.moDEL.Product;
-import com.EXAMPLE.moDEL.ProductBundle;
+import com.EXAMPLE.factory.ProductFactory;
+import com.EXAMPLE.model.NotifiableProduct;
+import com.EXAMPLE.model.Product;
+import com.EXAMPLE.model.ProductBundle;
+import com.EXAMPLE.utils.ProductUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,24 +12,26 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        ProductUtils utils = new ProductUtils();
+        ProductFactory productFactory = ProductFactory.getInstance();
+        ProductUtils productUtils = ProductUtils.getInstance();
+
         List<Product> products = new ArrayList<>();
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
+        products.add(productFactory.generateRandomProduct());
         products.forEach(it -> {
             if (it instanceof ProductBundle) {
-                utils.saveProductBundle((ProductBundle) it);
+                productUtils.saveProductBundle((ProductBundle) it);
             } else if (it instanceof NotifiableProduct) {
-                utils.saveNotifiableProduct((NotifiableProduct) it);
+                productUtils.saveNotifiableProduct((NotifiableProduct) it);
             }
         });
 
-        System.out.println(utils.getAll());
-        System.out.println("notifications sent: " + utils.filterNotifiableProductsAndSendNotifications());
+        productUtils.getAll().forEach(System.out::println);
+        System.out.println("notifications sent: " + productUtils.filterNotifiableProductsAndSendNotifications());
     }
 }

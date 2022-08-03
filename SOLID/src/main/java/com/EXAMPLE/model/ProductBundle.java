@@ -1,16 +1,11 @@
-package com.EXAMPLE.moDEL;
+package com.EXAMPLE.model;
 
-import lombok.Data;
 import lombok.Setter;
 
-public class ProductBundle extends NotifiableProduct{
+@Setter
+public class ProductBundle extends Product implements IProduct{
 
     protected int amount;
-
-    public ProductBundle(long id, String title, double price, boolean available, String channel, int amount) {
-        super(id, title, price, available, channel);
-        this.amount = amount;
-    }
 
     public void setAmount(int amount) {
         this.amount = amount;
@@ -22,14 +17,24 @@ public class ProductBundle extends NotifiableProduct{
     }
 
     @Override
+    public String getBasicInfo() {
+        return "ProductBundle{" +
+                ", id=" + id +
+                ", available=" + available +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", amountInBundle=" + amount +
+                '}';
+    }
+
+    @Override
     public int getAmountInBundle() {
         return amount;
     }
 
     @Override
-    public String getBasicInfo() {
+    public String toString() {
         return "ProductBundle{" +
-                "channel='" + channel + '\'' +
                 ", id=" + id +
                 ", available=" + available +
                 ", title='" + title + '\'' +

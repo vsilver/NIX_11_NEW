@@ -1,24 +1,23 @@
-package com.EXAMPLE.moDEL;
+package com.EXAMPLE.model;
 
 import lombok.Data;
 
-import java.util.UUID;
-
-public abstract class Product implements IProduct{
+@Data
+public abstract class Product{
 
     protected long id;
     protected boolean available;
     protected String title;
     protected double price;
 
-    protected Product(long id, String title, double price, boolean available) {
+    /*protected Product(long id, String title, double price, boolean available) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.available = available;
-    }
+    }*/
 
-    public String getTitle() {
+    /*public String getTitle() {
         return title;
     }
 
@@ -56,14 +55,18 @@ public abstract class Product implements IProduct{
 
     public String generateAddressForNotification() {
         return "somerandommail@gmail.com";
-    }
+    }*/
 
-    public String getBasicInfo() {
+    public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", available=" + available +
                 ", title='" + title + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    public Long getID() {
+        return id;
     }
 }

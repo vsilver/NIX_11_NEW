@@ -1,6 +1,6 @@
-package com.EXAMPLE;
+package com.EXAMPLE.repository;
 
-import com.EXAMPLE.moDEL.Product;
+import com.EXAMPLE.model.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;
