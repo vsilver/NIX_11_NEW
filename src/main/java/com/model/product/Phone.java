@@ -63,6 +63,9 @@ public class Phone extends Product implements Comparable<Phone>{
                 ", count=" + count +
                 ", price=" + price +
                 ", model=" + model +
+                ", currency=" + currency +
+                ", operationSystem=" + operationSystem +
+                ", creatingDate=" + creatingDate +
                 '}';
     }
 
