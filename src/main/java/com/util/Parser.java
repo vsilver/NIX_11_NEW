@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -22,7 +23,11 @@ public final class Parser {
     private Parser(){
     }
 
-    public static void readLinesFromJSON(List<String> lines, Map<String, String> fields) {
+    public static Map<String, Object> readLinesFromJSON(InputStream readAllLinesJSON) {
+
+        Map<String, Object> result = new HashMap<>();
+        List<String> lines = Parser.readAllLinesJSON(readAllLinesJSON);
+
         Pattern pattern = Pattern.compile("\"\\w+\": \".*\"");
         lines.stream()
                 .map(String::trim)
@@ -31,12 +36,13 @@ public final class Parser {
                     if (matcher.find()) {
                         String field = matcher.group().substring(1, line.indexOf(":") - 1);
                         String value = matcher.group().substring(line.indexOf(":") + 3, line.lastIndexOf("\""));
-                        fields.put(field, value);
+                        result.put(field, value);
                     }
                 });
+        return result;
     }
 
-    public static List<String> readAllLinesJSON(InputStream inputStreamJSON) {
+    private static List<String> readAllLinesJSON(InputStream inputStreamJSON) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStreamJSON))) {
             String line;
@@ -81,20 +87,6 @@ public final class Parser {
                         }
                     }
                 });
-    }
-
-    public static Phone phoneMapper(Map<String, String> map) {
-        OperationSystem operationSystem = new OperationSystem();
-        operationSystem.setDesignation(map.get("designation"));
-        operationSystem.setVersion(Integer.parseInt(map.get("version")));
-        return new Phone(map.get("title"),
-                Integer.parseInt(map.get("count")),
-                Long.parseLong(map.get("price")),
-                map.get("model"),
-                Manufacturer.valueOf(map.get("manufacturer")),
-                LocalDateTime.parse(map.get("created"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
-                map.get("currency"),
-                operationSystem);
     }
 
 }

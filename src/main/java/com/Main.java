@@ -34,12 +34,11 @@ public class Main {
         List<String> lines = Parser.readAllLinesXML(inputStreamXML);
         Map<String, String> fields = new HashMap<>();
         Parser.readLinesFromXML(lines, fields);
-        Phone phone = Parser.phoneMapper(fields);
+        Phone phone = MapperService.phoneMapper(fields);
         System.out.println("XML phone : " + phone);
 
-        lines = Parser.readAllLinesJSON(inputStreamJSON);
-        Parser.readLinesFromJSON(lines, fields);
-        Phone phoneJSON = Parser.phoneMapper(fields);
+        Parser.readLinesFromJSON(inputStreamJSON);
+        Phone phoneJSON = MapperService.phoneMapper(fields);
         System.out.println("JSON phone : " + phoneJSON);
 
         //src/main/resources/phone.json
