@@ -86,12 +86,12 @@ public abstract class ProductService<T extends Product>  {
                 .collect(Collectors.toMap(Product::getId, product -> product.getClass().getSimpleName(), (o1, o2) -> o2));
     }
 
-    public LongSummaryStatistics getPriceStatistic() {
+    /*public LongSummaryStatistics getPriceStatistic() {
         return repository.getAll()
                 .stream()
                 .mapToLong(Product::getPrice)
                 .summaryStatistics();
-    }
+    }*/
 
     public Product mapProduct(Map<String, Object> fields) {
         Function<Map<String, Object>, Product> mapToProduct = (map) -> {

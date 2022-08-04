@@ -43,11 +43,11 @@ public class Laptop extends Product {
         return price;
     }
 
-    public static class Builder {
+    public class Builder {
         private Laptop newLaptop;
 
         public Builder() {
-            newLaptop = new Laptop();
+            newLaptop = new Laptop(title, count, (long) price, model, manufacturer, creatingDate, currency, operationSystem);
         }
 
         public Builder withTitle(String title){
