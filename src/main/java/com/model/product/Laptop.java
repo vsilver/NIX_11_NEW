@@ -16,11 +16,11 @@ public class Laptop extends Product {
     private String currency;
 
 
-    /*public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
+    public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
         super(title, count, price, ProductType.LAPTOP);
         this.model = model;
         this.manufacturer = manufacturer;
-    }*/
+    }
 
     public Laptop(String title, int count, long price, String model, Manufacturer manufacturer, LocalDateTime creatingDate, String currency, OperationSystem operationSystem) {
         super(title, count, price, ProductType.LAPTOP);
@@ -35,20 +35,12 @@ public class Laptop extends Product {
         return title;
     }
 
-    public Genre getCount() {
-        return genre;
+    public int getCount() {
+        return count;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public Year getPublished() {
-        return published;
-    }
-
-    public String getDescription() {
-        return description;
+    public double getPrice() {
+        return price;
     }
 
     public static class Builder {
@@ -70,21 +62,6 @@ public class Laptop extends Product {
 
         public Builder withPrice(long price){
             newLaptop.price = price;
-            return this;
-        }
-
-        public Builder withHeight(int height){
-            newLaptop.height = height;
-            return this;
-        }
-
-        public Builder withWeight(int weight){
-            newLaptop.weight = weight;
-            return this;
-        }
-
-        public Builder withParents(Set<Person> parents){
-            newLaptop.parents = parents;
             return this;
         }
 

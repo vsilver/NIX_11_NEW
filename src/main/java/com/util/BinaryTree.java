@@ -45,8 +45,8 @@ public class BinaryTree <E extends Product>{
     private long sum(Node<E> root) {
         if (root == null)
             return 0;
-        return (root.item.getPrice() + sum(root.left) +
-                sum(root.right));
+        return (long) (root.item.getPrice() + sum(root.left) +
+                        sum(root.right));
     }
 
     public void traverseNodes(StringBuilder sb, String padding, String pointer, Node<E> node,

@@ -42,11 +42,11 @@ public abstract class Product {
         this.count = count;
     }
 
-    public long getPrice() {
-        return (long) price;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
