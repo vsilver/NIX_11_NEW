@@ -1,11 +1,10 @@
 package com.command;
 
 import com.model.product.*;
+import com.model.product.laptop.Laptop;
 import com.service.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 public class Print implements Command {

@@ -1,22 +1,21 @@
-package com.model.product;
+package com.model.product.laptop;
 
+import com.model.product.Product;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
 
 public class Laptop extends Product {
-    private final String model;
+    /*private final String model;
     private final Manufacturer manufacturer;
     private OperationSystem operationSystem;
     private LocalDateTime creatingDate;
-    private String currency;
+    private String currency;*/
 
 
-    public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
+    /*public Laptop(String title, int count, double price, String model, Manufacturer manufacturer) {
         super(title, count, price, ProductType.LAPTOP);
         this.model = model;
         this.manufacturer = manufacturer;
@@ -29,38 +28,51 @@ public class Laptop extends Product {
         this.creatingDate = creatingDate;
         this.currency = currency;
         this.operationSystem = operationSystem;
+    }*/
+
+    private Laptop() {
+        super(type);
     }
 
-    public String getTitle() {
-        return title;
+    private LaptopType laptopType;
+
+    public void setlaptopType(LaptopType laptopType) {
+        this.laptopType = laptopType;
     }
 
-    public int getCount() {
-        return count;
+    public LaptopType getlaptopType() {
+        return laptopType;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public class Builder {
+    public static class Builder {
         private Laptop newLaptop;
 
-        public Builder() {
-            newLaptop = new Laptop(title, count, (long) price, model, manufacturer, creatingDate, currency, operationSystem);
+        public Builder(long price, LaptopType laptopType) {
+            if (laptopType == null) {
+                throw new IllegalArgumentException("LaptopType can not be null");
+            }
+            newLaptop = new Laptop();
+            newLaptop.setPrice(price);
+            newLaptop.setlaptopType(laptopType);
         }
 
-        public Builder withTitle(String title){
+        public Builder setTittle(String title){
+            if (title.length() > 20) {
+                throw new IllegalArgumentException("Title cant be more then 20 symbols");
+            }
             newLaptop.title = title;
             return this;
         }
 
-        public Builder withCount(int count){
+        public Builder setCount(int count){
+            if (count < 0) {
+                throw new IllegalArgumentException("Count cant be less then 0");
+            }
             newLaptop.count = count;
             return this;
         }
 
-        public Builder withPrice(long price){
+        public Builder setPrice(long price){
             newLaptop.price = price;
             return this;
         }
@@ -74,12 +86,10 @@ public class Laptop extends Product {
     @Override
     public String toString() {
         return "Laptop{" +
-                "manufacturer=" + manufacturer +
                 ", id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", count=" + count +
                 ", price=" + price +
-                ", model=" + model +
                 '}';
     }
 }

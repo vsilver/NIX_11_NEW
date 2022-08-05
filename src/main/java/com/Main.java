@@ -1,8 +1,5 @@
 package com;
 
-import com.controller.Controller;
-import com.model.product.Laptop;
-import com.model.product.Manufacturer;
 import com.model.product.Phone;
 import com.repository.*;
 import com.service.*;

@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.product.Laptop;
+import com.model.product.laptop.Laptop;
 import com.model.product.Manufacturer;
 import com.repository.LaptopRepository;
 import org.junit.jupiter.api.Assertions;
@@ -48,7 +48,7 @@ class LaptopServiceTest {
 
     @Test
     void saveLaptop_matchers() {
-        final Laptop laptop = new Laptop("Title", 100, 1000.0,"Model" , Manufacturer.SAMSUNG);
+        final Laptop laptop = new Laptop("Title", 100, 1000.0,"Model" );
         target.saveLaptop(laptop);
 
         verify(repository).save(argThat(new ArgumentMatcher<Laptop>(){

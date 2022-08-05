@@ -1,6 +1,7 @@
 package com.command;
 
 import com.model.product.*;
+import com.model.product.laptop.Laptop;
 import com.repository.TVRepository;
 import com.service.*;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 
 public class Update implements Command{

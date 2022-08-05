@@ -22,6 +22,11 @@ public abstract class Product {
         this.type = type;
     }
 
+    public Product(ProductType type) {
+        this.type = type;
+        id = UUID.randomUUID().toString();
+    }
+
     public String getId() {
         return id;
     }

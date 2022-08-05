@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.product.*;
+import com.model.product.laptop.Laptop;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
