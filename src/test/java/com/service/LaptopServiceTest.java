@@ -2,6 +2,7 @@ package com.service;
 
 import com.model.product.laptop.Laptop;
 import com.model.product.Manufacturer;
+import com.model.product.laptop.LaptopType;
 import com.repository.LaptopRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,7 @@ class LaptopServiceTest {
 
     @Test
     void saveLaptop_matchers() {
-        final Laptop laptop = new Laptop("Title", 100, 1000.0,"Model" );
+        final Laptop laptop = new Laptop();
         target.saveLaptop(laptop);
 
         verify(repository).save(argThat(new ArgumentMatcher<Laptop>(){
@@ -61,7 +62,7 @@ class LaptopServiceTest {
 
     @Test
     void saveLaptop_zeroCount() {
-        final Laptop laptop = new Laptop("Title", 0, 1000.0,"Model" , Manufacturer.SAMSUNG);
+        final Laptop laptop = new Laptop();
         target.saveLaptop(laptop);
 
         ArgumentCaptor<Laptop> argument = ArgumentCaptor.forClass(Laptop.class);

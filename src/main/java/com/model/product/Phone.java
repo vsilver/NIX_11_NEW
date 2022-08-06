@@ -20,20 +20,20 @@ public class Phone extends Product implements Comparable<Phone>{
     private String currency;
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer) {
-        super(title, count, price, ProductType.PHONE);
+        super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
     }
 
     public Phone(String title, int count, long price, String model, Manufacturer manufacturer, List<String> details) {
-        super(title, count, price, ProductType.PHONE);
+        super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
         this.details = details;
     }
 
     public Phone(String title, int count, long price, String model, Manufacturer manufacturer, LocalDateTime creatingDate, String currency, OperationSystem operationSystem) {
-        super(title, count, price, ProductType.LAPTOP);
+        super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
         this.creatingDate = creatingDate;

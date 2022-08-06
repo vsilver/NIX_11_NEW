@@ -30,8 +30,7 @@ public class Laptop extends Product {
         this.operationSystem = operationSystem;
     }*/
 
-    private Laptop() {
-        super(type);
+    public Laptop() {
     }
 
     private LaptopType laptopType;

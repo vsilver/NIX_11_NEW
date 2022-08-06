@@ -12,18 +12,17 @@ public abstract class Product {
     protected String title;
     protected int count;
     protected double price;
-    protected final ProductType type;
+    //protected final ProductType type;
 
-    protected Product(String title, int count, double price, ProductType type) {
+    protected Product(String title, int count, double price) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.count = count;
         this.price = price;
-        this.type = type;
+        //this.type = type;
     }
 
-    public Product(ProductType type) {
-        this.type = type;
+    public Product() {
         id = UUID.randomUUID().toString();
     }
 
