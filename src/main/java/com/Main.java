@@ -1,6 +1,8 @@
 package com;
 
 import com.model.product.Phone;
+import com.model.product.laptop.Laptop;
+import com.model.product.laptop.LaptopType;
 import com.repository.*;
 import com.service.*;
 import com.util.BinaryTree;
@@ -24,7 +26,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Laptop laptop = new Laptop.Builder(100, LaptopType.APPLE)
+                .setCount(50)
+                .setTittle("SAMSUNG")
+                .build();
+
+        System.out.println(laptop);
+
+        /*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream inputStreamXML = classLoader.getResourceAsStream("phone.xml");
         InputStream inputStreamJSON = classLoader.getResourceAsStream("phone.json");
 
@@ -36,7 +45,7 @@ public class Main {
 
         Parser.readLinesFromJSON(inputStreamJSON);
         Phone phoneJSON = MapperService.phoneMapper(fields);
-        System.out.println("JSON phone : " + phoneJSON);
+        System.out.println("JSON phone : " + phoneJSON);*/
 
         //src/main/resources/phone.json
         //src/main/resources/phone.xml
