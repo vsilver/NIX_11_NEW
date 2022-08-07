@@ -7,20 +7,20 @@ import lombok.Setter;
 @Getter
 public class Television extends Product{
     protected int diagonal;
-    protected int country;
+    protected Country country;
 
     public void setDiagonal(int diagonal) {
         this.diagonal = diagonal;
     }
-    public void setCountry(int country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
     @Override
     public String toString() {
-        return "Telephone{" +
+        return "Television{" +
                 "series=" + series +
-                ", screen_type=" + screen_type +
+                ", screenType=" + screenType +
                 ", price=" + price +
                 ", diagonal=" + diagonal +
                 ", country=" + country +

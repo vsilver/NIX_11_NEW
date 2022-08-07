@@ -16,7 +16,7 @@ public class Telephone extends Product{
     public String toString() {
         return "Telephone{" +
                 "series=" + series +
-                ", screen_type=" + screen_type +
+                ", screenType=" + screenType +
                 ", price=" + price +
                 ", model=" + model +
                 '}';
