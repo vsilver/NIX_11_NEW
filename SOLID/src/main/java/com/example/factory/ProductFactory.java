@@ -1,8 +1,8 @@
-package com.EXAMPLE.factory;
+package com.example.factory;
 
-import com.EXAMPLE.model.NotifiableProduct;
-import com.EXAMPLE.model.Product;
-import com.EXAMPLE.model.ProductBundle;
+import com.example.model.NotifiableProduct;
+import com.example.model.Product;
+import com.example.model.ProductBundle;
 
 import java.util.Random;
 

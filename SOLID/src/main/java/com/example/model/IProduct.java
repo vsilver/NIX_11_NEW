@@ -1,4 +1,4 @@
-package com.EXAMPLE.model;
+package com.example.model;
 
 public interface IProduct {
 

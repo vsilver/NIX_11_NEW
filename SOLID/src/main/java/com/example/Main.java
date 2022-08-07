@@ -1,10 +1,10 @@
-package com.EXAMPLE;
+package com.example;
 
-import com.EXAMPLE.factory.ProductFactory;
-import com.EXAMPLE.model.NotifiableProduct;
-import com.EXAMPLE.model.Product;
-import com.EXAMPLE.model.ProductBundle;
-import com.EXAMPLE.utils.ProductUtils;
+import com.example.factory.ProductFactory;
+import com.example.model.NotifiableProduct;
+import com.example.model.Product;
+import com.example.model.ProductBundle;
+import com.example.utils.ProductUtils;
 
 import java.util.ArrayList;
 import java.util.List;

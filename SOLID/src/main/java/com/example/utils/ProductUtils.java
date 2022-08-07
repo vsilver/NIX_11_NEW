@@ -1,9 +1,9 @@
-package com.EXAMPLE.utils;
+package com.example.utils;
 
-import com.EXAMPLE.model.NotifiableProduct;
-import com.EXAMPLE.model.Product;
-import com.EXAMPLE.model.ProductBundle;
-import com.EXAMPLE.repository.ProductRepository;
+import com.example.model.NotifiableProduct;
+import com.example.model.Product;
+import com.example.model.ProductBundle;
+import com.example.repository.ProductRepository;
 
 import java.util.List;
 
