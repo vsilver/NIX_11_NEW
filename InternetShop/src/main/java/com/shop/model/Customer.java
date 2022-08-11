@@ -3,14 +3,20 @@ package com.shop.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 public class Customer {
-    protected int id;
+    protected String  id;
     protected String email;
     protected int age;
 
-    public void setID(int id) {
+    public Customer() {
+        id = UUID.randomUUID().toString();
+    }
+
+    public void setID(String id) {
         this.id = id;
     }
     public void setEmail(String email) {

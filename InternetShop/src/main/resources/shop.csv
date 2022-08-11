@@ -1,0 +1,12 @@
+type,series,model,diagonal,screen type,country,price
+Telephone,S-10,Samsung,none,QLED,none,1000
+Television,Grundic,none,25,LED,China,5100
+Telephone,S-20,Samsung,none,LCD,none,3500
+Telephone,S-11,Samsung,none,QLED,none,2200
+Television,RTI-14,none,25,LED,USA,1500
+Television,RTI-14,none,25,IPS,China,1900
+Telephone,S-25,Samsung,none,QLED,none,2100
+Telephone,S-25,Samsung,none,LED,,1700
+Television,RTI-14,none,25,LED,China,1500
+Telephone,S-23,Apple,none,LCD,none,4500
+Television,RTI-14,none,25,OLED,China,2000
