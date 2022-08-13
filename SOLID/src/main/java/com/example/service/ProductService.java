@@ -1,18 +1,23 @@
-package com.example.utils;
+package com.example.service;
 
 import com.example.model.NotifiableProduct;
 import com.example.model.Product;
 import com.example.model.ProductBundle;
+import com.example.repository.IProductRepository;
 import com.example.repository.ProductRepository;
 
 import java.util.List;
 
-public class ProductUtils {
+public class ProductService extends AbstractProductService{
 
-    private ProductRepository repository = new ProductRepository();
-    private static ProductUtils instance;
+    //private ProductRepository repository = new ProductRepository();
+    private static ProductService instance;
 
-    public void saveNotifiableProduct(NotifiableProduct product) {
+    private ProductService(IProductRepository repository) {
+        super(repository);
+    }
+
+    /*public void saveNotifiableProduct(NotifiableProduct product) {
         repository.save(product);
     }
 
@@ -34,11 +39,11 @@ public class ProductUtils {
 
     public List<Product> getAll() {
         return repository.getAll();
-    }
+    }*/
 
-    public static ProductUtils getInstance() {
+    public static ProductService getInstance() {
         if (instance == null) {
-            instance = new ProductUtils();
+            instance = new ProductService((ProductRepository.getInstance()));
         }
 
         return instance;

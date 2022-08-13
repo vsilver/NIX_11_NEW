@@ -7,9 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductRepository {
+public class ProductRepository implements IProductRepository{
 
-    private Map<Long, Product> storage = new HashMap<>();
+    private static ProductRepository instance;
+    private final Map<Long, Product> storage;
+
+    public ProductRepository() {
+        storage = new HashMap<>();
+    }
+
+    public static ProductRepository getInstance() {
+        if (instance == null) {
+            instance = new ProductRepository();
+        }
+
+        return instance;
+    }
 
     public Product save(Product product) {
         return storage.put(product.getID(), product);

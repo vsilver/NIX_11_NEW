@@ -1,11 +1,6 @@
 package com.model.product.laptop;
 
 import com.model.product.Product;
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
 
 public class Laptop extends Product {
     /*private final String model;
@@ -30,7 +25,7 @@ public class Laptop extends Product {
         this.operationSystem = operationSystem;
     }*/
 
-    public Laptop() {
+    private Laptop() {
     }
 
     private LaptopType laptopType;
@@ -59,7 +54,7 @@ public class Laptop extends Product {
             if (title.length() > 20) {
                 throw new IllegalArgumentException("Title cant be more then 20 symbols");
             }
-            newLaptop.title = title;
+            newLaptop.setTitle(title);
             return this;
         }
 
@@ -67,12 +62,12 @@ public class Laptop extends Product {
             if (count < 0) {
                 throw new IllegalArgumentException("Count cant be less then 0");
             }
-            newLaptop.count = count;
+            newLaptop.setCount(count);
             return this;
         }
 
         public Builder setPrice(long price){
-            newLaptop.price = price;
+            newLaptop.setPrice(price);
             return this;
         }
 
