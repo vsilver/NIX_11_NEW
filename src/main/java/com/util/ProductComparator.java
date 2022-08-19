@@ -13,6 +13,6 @@ public class ProductComparator <T extends Product> implements Comparator<T> {
             }
             return o1.getTitle().compareTo(o2.getTitle());
         }
-        return Long.compare(o2.getPrice(), o1.getPrice());
+        return 0;//0compare(o2.getPrice(), o1.getPrice());
     }
 }

@@ -7,7 +7,7 @@ public class TV extends Product {
     private final Manufacturer manufacturer;
 
     public TV(String title, int count, double price, String model, Manufacturer manufacturer) {
-        super(title, count, price, ProductType.PHONE);
+        super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
     }

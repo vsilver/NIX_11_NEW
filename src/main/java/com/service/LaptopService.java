@@ -1,10 +1,10 @@
 package com.service;
 
 import com.model.product.Manufacturer;
-import com.model.product.Laptop;
+import com.model.product.laptop.Laptop;
 import com.model.product.Product;
+import com.model.product.laptop.LaptopType;
 import com.repository.LaptopRepository;
-import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class LaptopService extends ProductService<Laptop>{
         return values[index];
     }
 
-    @Override
+    /*@Override
     public Laptop createProduct() {
         return new Laptop(
                 Laptop.class.getSimpleName() + "-" + RANDOM.nextInt(1000),
@@ -37,6 +37,20 @@ public class LaptopService extends ProductService<Laptop>{
                 "Model-" + RANDOM.nextInt(10),
                 getRandomManufacturer()
         );
+    }*/
+
+    private LaptopType getRandomLaptopType() {
+        LaptopType[] values = LaptopType.values();
+        int index = RANDOM.nextInt(values.length);
+        return values[index];
+    }
+
+    @Override
+    public Laptop createProduct() {
+        return new Laptop.Builder(RANDOM.nextLong(), getRandomLaptopType())
+                .setTittle("Title - " + RANDOM.nextInt())
+                .setCount(RANDOM.nextInt(1000))
+                .build();
     }
 
     public static LaptopService getInstance() {

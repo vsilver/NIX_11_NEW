@@ -1,6 +1,8 @@
 package com.service;
 
 import com.model.product.*;
+import com.model.product.laptop.Laptop;
+import com.model.product.laptop.LaptopType;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,12 +88,12 @@ public abstract class ProductService<T extends Product>  {
                 .collect(Collectors.toMap(Product::getId, product -> product.getClass().getSimpleName(), (o1, o2) -> o2));
     }
 
-    public LongSummaryStatistics getPriceStatistic() {
+    /*public LongSummaryStatistics getPriceStatistic() {
         return repository.getAll()
                 .stream()
                 .mapToLong(Product::getPrice)
                 .summaryStatistics();
-    }
+    }*/
 
     public Product mapProduct(Map<String, Object> fields) {
         Function<Map<String, Object>, Product> mapToProduct = (map) -> {
@@ -103,11 +105,11 @@ public abstract class ProductService<T extends Product>  {
                             (Long) map.getOrDefault("price", 0L),
                             map.getOrDefault("model", "Default").toString(),
                             Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
-                    case LAPTOP -> new Laptop(map.getOrDefault("title", "Default").toString(),
-                            (Integer) map.getOrDefault("count", 0),
-                            (Long) map.getOrDefault("price", 0L),
-                            map.getOrDefault("model", "Default").toString(),
-                            Manufacturer.valueOf(map.getOrDefault("manufacturer", Manufacturer.SAMSUNG).toString()));
+                    case LAPTOP -> new Laptop.Builder((Long) map.getOrDefault("price", 0L),
+                            LaptopType.valueOf(map.getOrDefault("LaptopType", LaptopType.AMD).toString()))
+                            .setTittle(map.getOrDefault("title", "Default").toString())
+                            .setCount((Integer) map.getOrDefault("count", 0))
+                            .build();
                     case HEADPHONE -> new Headphone(map.getOrDefault("title", "Default").toString(),
                             (Integer) map.getOrDefault("count", 0),
                             (Long) map.getOrDefault("price", 0L),
