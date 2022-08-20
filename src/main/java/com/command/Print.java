@@ -3,6 +3,8 @@ package com.command;
 import com.model.product.*;
 import com.model.product.laptop.Laptop;
 import com.service.*;
+import com.util.UserInputUtil;
+import com.util.UtilEnumToList;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +21,7 @@ public class Print implements Command {
 
         ProductType[] planeTypes = ProductType.values();
         List<String> names = UtilEnumToList.getNamesOfType(planeTypes);
-        int userInput = UserInputUtil.getUserInput(names, planeTypes.length);
+        int userInput = UserInputUtil.getUserInput(names);
         switch (planeTypes[userInput]) {
             case PHONE -> print(PHONE_SERVICE);
             case TV -> print(TV_SERVICE);

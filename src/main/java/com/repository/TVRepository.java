@@ -1,16 +1,20 @@
 package com.repository;
 
+import com.annotation.Autowired;
+import com.annotation.Singleton;
 import com.model.product.TV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class TVRepository implements CrudRepository<TV>{
     private static final Logger LOGGER = LoggerFactory.getLogger(TVRepository.class);
     private final List<TV> tvList;
     private static TVRepository instance;
 
+    @Autowired
     public TVRepository() {
         tvList = new LinkedList<>();
     }

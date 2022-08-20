@@ -16,6 +16,10 @@ public class Telephone extends Product {
         super(productType);
     }
 
+    public Telephone(String series, ScreenType screenType, double price, String model, ProductType productType) {
+        super(productType);
+    }
+
     /*public void setModel(String model) {
         this.model = model;
     }*/

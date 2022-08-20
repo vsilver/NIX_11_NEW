@@ -2,15 +2,14 @@ package com.controller;
 
 import com.command.Command;
 import com.command.Commands;
-import com.command.UserInputUtil;
-import com.command.UtilEnumToList;
+import com.util.UserInputUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
-    private Controller() {
+    public Controller() {
     }
 
     public static void run() {
@@ -20,7 +19,7 @@ public class Controller {
             Command command = commands[userAction].getCommand();
             command.execute();
             run();
-            //repeatOrOtherAction(command);
+            repeatOrOtherAction(command);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -29,11 +28,11 @@ public class Controller {
     private static int chooseAction() throws IOException {
         System.out.println("Choose action");
         Commands[] commands = Commands.values();
-        List<String> commandsList = UtilEnumToList.getNamesOfType(commands);
-        return UserInputUtil.getUserInput(commandsList, commands.length);
+        List<String> commandsList = Arrays.stream(Commands.values()).map(Commands::getName).toList();
+        return UserInputUtil.getUserInput(commandsList);
     }
 
-    /*private static void repeatOrOtherAction(Command command) throws IOException {
+    private static void repeatOrOtherAction(Command command) throws IOException {
         int input = UserInputUtil.getUserInput(List.of("Repeat", "Other action"));
         switch (input) {
             case 0 -> {
@@ -46,5 +45,5 @@ public class Controller {
                 repeatOrOtherAction(command);
             }
         }
-    }*/
+    }
 }

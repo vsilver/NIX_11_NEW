@@ -4,6 +4,8 @@ import com.model.product.*;
 import com.model.product.laptop.Laptop;
 import com.repository.TVRepository;
 import com.service.*;
+import com.util.UserInputUtil;
+import com.util.UtilEnumToList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class Delete implements Command{
         System.out.println("What do you want to Delete:");
         ProductType[] types = ProductType.values();
         List<String> names = UtilEnumToList.getNamesOfType(types);
-        int userInput = UserInputUtil.getUserInput(names, types.length);
+        int userInput = UserInputUtil.getUserInput(names);
         switch (types[userInput]) {
             case PHONE -> delete(PHONE_SERVICE);
             case LAPTOP -> delete(LAPTOP_SERVICE);

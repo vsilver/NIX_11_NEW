@@ -4,6 +4,8 @@ import com.model.product.*;
 import com.model.product.laptop.Laptop;
 import com.repository.TVRepository;
 import com.service.*;
+import com.util.UserInputUtil;
+import com.util.UtilEnumToList;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -25,7 +27,7 @@ public class Update implements Command{
         try {
             ProductType[] types = ProductType.values();
             List<String> names = UtilEnumToList.getNamesOfType(types);
-            int userInput = UserInputUtil.getUserInput(names, types.length);
+            int userInput = UserInputUtil.getUserInput(names);
             switch (types[userInput]) {
                 case PHONE -> update(PHONE_SERVICE);
                 case LAPTOP -> update(LAPTOP_SERVICE);

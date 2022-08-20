@@ -1,5 +1,6 @@
 package com;
 
+import com.controller.Controller;
 import com.model.product.Phone;
 import com.model.product.laptop.Laptop;
 import com.model.product.laptop.LaptopType;
@@ -8,6 +9,7 @@ import com.service.*;
 import com.util.BinaryTree;
 import com.util.Parser;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +28,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Laptop laptop = new Laptop.Builder(100, LaptopType.APPLE)
+        Controller.run();
+
+        /*Laptop laptop = new Laptop.Builder(100, LaptopType.APPLE)
                 .setCount(50)
                 .setTittle("SAMSUNG")
                 .build();
 
-        System.out.println(laptop);
+        System.out.println(laptop);*/
 
         /*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream inputStreamXML = classLoader.getResourceAsStream("phone.xml");

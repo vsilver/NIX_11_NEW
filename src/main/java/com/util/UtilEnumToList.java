@@ -1,5 +1,6 @@
-package com.command;
+package com.util;
 
+import com.command.Commands;
 import com.model.product.ProductType;
 
 import java.util.ArrayList;
