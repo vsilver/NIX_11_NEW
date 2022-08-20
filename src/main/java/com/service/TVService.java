@@ -1,14 +1,18 @@
 package com.service;
 
+import com.annotation.Autowired;
+import com.annotation.Singleton;
 import com.model.product.Manufacturer;
 import com.model.product.TV;
 import com.repository.CrudRepository;
 import com.repository.PhoneRepository;
 import com.repository.TVRepository;
 
+@Singleton
 public class TVService extends ProductService<TV>{
     private static TVService instance;
 
+    @Autowired
     public TVService(CrudRepository<TV> repository) {
         super(repository);
     }

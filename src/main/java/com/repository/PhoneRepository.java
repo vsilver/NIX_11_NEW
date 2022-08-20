@@ -1,5 +1,7 @@
 package com.repository;
 
+import com.annotation.Autowired;
+import com.annotation.Singleton;
 import com.model.product.Phone;
 import com.model.product.Product;
 import org.slf4j.Logger;
@@ -8,12 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class PhoneRepository implements CrudRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
     private static PhoneRepository instance;
 
+    @Autowired
     public PhoneRepository() {
         phones = new LinkedList<>();
     }

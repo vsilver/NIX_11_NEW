@@ -1,5 +1,7 @@
 package com.service;
 
+import com.annotation.Autowired;
+import com.annotation.Singleton;
 import com.model.product.Manufacturer;
 import com.model.product.Phone;
 import com.model.product.Product;
@@ -10,12 +12,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+@Singleton
 public class PhoneService extends ProductService<Phone> {
 
     private final PhoneRepository repository;
 
     private static PhoneService instance;
 
+    @Autowired
     public PhoneService(final PhoneRepository repository) {
         super(repository);
         this.repository = repository;

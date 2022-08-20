@@ -18,4 +18,11 @@ public enum Commands {
         this.command = command;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
 }

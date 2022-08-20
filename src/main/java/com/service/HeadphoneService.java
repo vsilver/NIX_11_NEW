@@ -1,5 +1,7 @@
 package com.service;
 
+import com.annotation.Autowired;
+import com.annotation.Singleton;
 import com.model.product.Headphone;
 import com.model.product.Manufacturer;
 import com.model.product.Product;
@@ -11,12 +13,14 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Random;
 
+@Singleton
 public class HeadphoneService extends ProductService<Headphone>{
     private static final Random RANDOM = new Random();
     private final HeadphoneRepository repository;
     private final Logger logger = LoggerFactory.getLogger(HeadphoneService.class);
     private static HeadphoneService instance;
 
+    @Autowired
     public HeadphoneService(HeadphoneRepository repository){
         super(repository);
         this.repository = repository;
